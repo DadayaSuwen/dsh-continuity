@@ -39,6 +39,15 @@ node "$PNPM_SCRIPT" check:compatibility
 
 - **MCP传输**：`pnpm test:mcp`通过[已发布公共probe](../../scripts/check-mcp-transport.mjs)、真实nestedSDK、loopback307/302目标观察和Nodestdio；5checks不计为新增Vitestcases，OAuth/TLS/真实Host未测。[范围](MCP_TRANSPORT.md)。
 
+- **中断恢复**：`pnpm test:interruption`通过[实际测试worker](../../tests/helpers/import-interruption-worker.ts)在durable里程碑hardstop，第二个进程用真实Storage/Session/Workspace重启；9checkpoint独立于60Vitest。[证据](IMPORT_INTERRUPTION.md)。
+- **有界资源**：先`pnpm build`，再`pnpm test:resources -- --repeat=2`观察builtpublicpreview入口；8种合成case，独立子进程RSS包括imports/fixture，无任意性能通过阈值。[范围](RESOURCE_MEASUREMENTS.md)。
+
+```bash
+# 本轮固定Playwright revision，仅项目工具目录；不用旧1228路径
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.toolchain/playwright-browsers" node node_modules/@playwright/test/cli.js install chromium
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.toolchain/playwright-browsers" node scripts/test-mobile.mjs
+```
+
 `pnpm test:coverage` 独立产生 cobertura相关证据，当前配置使用V8/text/lcov/json-summary；不虚构100%覆盖、不让空目录test/evaluation通过来冒充测试。`pnpm test:evaluation`只在真实测试已实现时声明成功。
 
 ## npm与源码同版本 DIFF

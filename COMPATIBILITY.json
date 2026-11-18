@@ -8,7 +8,7 @@
   "node": "24.22.3",
   "pnpm": "11.28.5",
   "validation": "local-engineering-passed-mvp-acceptance-open",
-  "validatedAt": "2026-11-19T02:16:52+08:00",
+  "validatedAt": "2026-11-19T03:15:00+08:00",
   "evidence": {
     "publishedRuntime": {
       "result": "passed",
@@ -64,6 +64,22 @@
       "crossOriginDestinationRequests": 0,
       "oauth": "not-tested",
       "changesExistingUserHost": false
+    },
+    "importInterruption": {
+      "result": "passed",
+      "checkpoints": 9,
+      "hardStopExit": 73,
+      "freshRestartExit": 0,
+      "partialSession": "retained-explicit-error-no-overwrite",
+      "powerLoss": "not-tested"
+    },
+    "resourceObservations": {
+      "result": "passed",
+      "distinctCases": 8,
+      "repeats": 2,
+      "largestPayloadMiB": 32,
+      "scope": "synthetic-binary-archive-preview-whole-child-RSS",
+      "defaultLimitStress": "not-tested"
     }
   },
   "sources": [

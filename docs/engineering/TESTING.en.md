@@ -39,6 +39,15 @@ A project with no tracked files fails the default secret scan deliberately. Expl
 
 - **MCPtransport**: `pnpm test:mcp` exercises [publishedpublicprobe](../../scripts/check-mcp-transport.mjs),actualnestedSDK,loopback307/302destinationobservations andNode stdio. Fivechecks are separate fromVitestcases;OAuth/TLS/realHostremain untested. [Scope](MCP_TRANSPORT.en.md).
 
+- **Interruption**:`pnpm test:interruption` uses[actualtypedworker](../../tests/helpers/import-interruption-worker.ts)hardstops atdurablemilestones,thenafreshprocessloadsrealStorage/Session/Workspace.Ninecheckpointsare separatefrom60Vitestcases.[Evidence](IMPORT_INTERRUPTION.en.md).
+- **Boundedresources**:buildfirst,then`pnpm test:resources -- --repeat=2` observesbuiltpublicpreview;eight syntheticcases,onefreshchildpercase,wholechildRSSincludesimports/fixture.Noarbitraryperformancepassthreshold.[Scope](RESOURCE_MEASUREMENTS.en.md).
+
+```bash
+# Current Playwright revision, project directory only; no old1228 fallback
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.toolchain/playwright-browsers" node node_modules/@playwright/test/cli.js install chromium
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.toolchain/playwright-browsers" node scripts/test-mobile.mjs
+```
+
 `pnpm test:coverage` uses V8 with text/lcov/json-summary reports. No invented 100% coverage or empty evaluation directory passes. `test:evaluation` is claimed only once real evaluation tests exist.
 
 ## Same npm version, different source

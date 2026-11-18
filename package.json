@@ -80,6 +80,8 @@
     "test:pinned": "node scripts/test-pinned.mjs",
     "test:mobile": "node scripts/test-mobile.mjs",
     "test:mcp": "node scripts/check-mcp-transport.mjs",
+    "test:interruption": "node scripts/check-import-interruption.mjs",
+    "test:resources": "node scripts/measure-resources.mjs",
     "test:evaluation": "vitest run tests/evaluation",
     "test:coverage": "vitest run --coverage",
     "build": "node scripts/build.mjs",

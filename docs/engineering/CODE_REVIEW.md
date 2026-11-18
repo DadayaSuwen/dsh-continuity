@@ -37,3 +37,19 @@
 截至2026-11-18 23:30 CST，Node24.22.3下两条真实运行路径各**60/60**，手机两个视口**8/8**。新增模型选择、session-scope映射、编辑删除墓碑、老包恢复和官方compaction上下文回归分别有实际运行证据；[运行记录](RUNTIME_EVIDENCE.md)与[进度](PROGRESS.md)由最终门禁更新。
 
 这不是人类GitHub review或MVP验收：真实App ZIP、真实模型质量、云端Actions、branch/environment设置、公开发布仍单列。审查者没有修改代码、没有运行远端操作，也没有宣称完整runtime测试通过；Lead独立复现并测试修复。
+
+## Maintenance round3 — fixedca1b65c working-tree review
+
+比较`git diff ca1b65ce04b11b2d76557e60bd30d3572f69348f`和七个尚未staged的新scripts/worker/双语文档。此时HEAD等于基线，three-dotcommitdiff为空；两轴明确审当前workingtree，不把空diff冒充审查。源目录/官方clone/lock不改，范围为publicharness、CI命令和说明。
+
+### Standards
+
+依据CONTRIBUTING27/31、DECISIONS53–63、TESTING证据纪律和ARCHITECTURE。独立read-only reviewer0c7bd7cb确认 **0文档硬违反 + 1启发式**。真实Migration/preview、Storage/Session/Workspace未被替代；七个直接hardstop与已完成取消drain分列；RSSwholechild/零timer采样/在途abort延迟/默认上限未测如实写明。
+
+**possible Duplicated Code**：[中断runner](../../scripts/check-import-interruption.mjs)与[resource runner](../../scripts/measure-resources.mjs)各自spawn/stdout/stderr/watchdog/close。当前异常结算不同，controlledworkers已实际close；依最小化约定暂不引入泛用runner，下一次同类lifecycle修复再集中共享shape。判断性建议，不是现有故障。
+
+### Spec
+
+依据PRD21/23的durable重复协调、honestpartial和原events不改；reviewer8affcf66确认无实质scopecreep/运行实现缺陷。**1个轻微复现性问题**：PRD27要求可复现CI，初稿CI只调用test:resources默认1次，文档范围是8×2。Lead将CI命令加`-- --repeat=2`，公开同样pnpm命令实际验证，不以一次CI观察等价两次minmax。
+
+本轮双轴：Standards0hard+1heuristic，最差为条件性spawn重复；Spec1minor，最差为重复参数缺失，已修正。报告彼此不合并或重新排名。两reviewer只读、无代码改动/paid/publiccalls；MVP和云端人类审批仍未接受。

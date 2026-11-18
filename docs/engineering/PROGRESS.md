@@ -1,6 +1,6 @@
 # 开发进度 / Engineering progress
 
-## 2026-11-19 01:55 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
+## 2026-11-19 03:15 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
 
 项目是独立 **DSH Continuity bundle 插件**，不是浏览器扩展、另一套客户端或 Harness。代码在独立目录；官方源码保持只读和 clean。所有本地开发、提交与测试均未公开发布，当前运行中的 3080 GUI 未改动。
 
@@ -34,6 +34,8 @@
 | production audit                           | 0 high/critical，0 moderate                           | 与完整开发 Host 闭包分开                                                                            |
 | 开发闭包 audit                             | **0公告，highgateexit0**                              | SDK2.3项目override实测修复；picomatchwithdrawnfeed更新不是codefix                                   |
 | MCP传输公共probe                           | **5/5**                                               | 真实loopback直接/同源HTTP、跨源307/302、stdio；非OAuth/真实Host修复声明                             |
+| 导入中断/取消/挂接失败重启                 | **9/9checkpoint**                                     | 实际post-durability硬退出73→freshprocess0；完整ID复用、partialSession明确错误保留                   |
+| 有界预览资源观察                           | **8种×2轮，16child通过**                              | 1/8/32MiBstored/deflate及限额/在途取消；whole-childRSS含fixture，非默认大限额承诺                   |
 
 详细命令与边界：[运行证据](RUNTIME_EVIDENCE.md)、[测试指南](TESTING.md)、[已知问题](KNOWN_ISSUES.md)。
 

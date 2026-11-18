@@ -56,6 +56,7 @@ Source deletion, memory deletion and formal DSH Session/attachment deletion are 
 - Rules extract conservative candidates, not arbitrary novel-quality semantic knowledge. `batchEveryTurns=0` disables live Session capture by default; opt-in capture still creates review-only candidates with no model extraction call.
 - Recovery uses official logged context snapshots. It never rewrites original imported events or promises invisible injection.
 - Current identities use explicit keys; multi-user sharing and display-name rename mapping are Planned.
+- [Nine import interruption checkpoints](docs/engineering/IMPORT_INTERRUPTION.en.md) pass after fresh-process restart. [Bounded1/8/32MiB resource observations](docs/engineering/RESOURCE_MEASUREMENTS.en.md) include fixture/module memory; default128/512/64MiB peaks and power-loss windows remain unvalidated.
 - Package v1 preserves sources/memories; full Session/attachment package recovery and large streaming backups are Planned.
 - Current project production/development audits report zero advisories after tested dependency fixes and withdrawn-feed reconciliation; this does not update existing user Host SDKs or prove all defects absent. [MCP scope](docs/engineering/MCP_TRANSPORT.en.md). Public release is not approved.
 
@@ -69,9 +70,11 @@ pnpm lint
 pnpm format:check
 pnpm test
 pnpm test:runtime
+pnpm test:interruption
 # Clone official source first, then run exact-SHA runtime tests:
 pnpm test:pinned
 pnpm build
+pnpm test:resources -- --repeat=2
 pnpm check:docs
 ```
 

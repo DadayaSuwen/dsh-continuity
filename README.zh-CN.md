@@ -56,6 +56,7 @@ DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护�
 - 规则候选不等于任意长篇小说的可靠语义理解。`batchEveryTurns=0` 默认关闭新消息采集；启用后仍只产生待审核候选，无模型提取调用。
 - 恢复通过官方日志化 context snapshot；不改原始已提交事件，不承诺隐形注入。
 - 身份使用明确分区键；多用户共享、名称与 ID 分离改名体验为 Planned。
+- [九个导入中断节点](docs/engineering/IMPORT_INTERRUPTION.md)已通过freshprocess重启；[1/8/32MiB有界资源观察](docs/engineering/RESOURCE_MEASUREMENTS.md)含fixture/模块内存，默认128/512/64MiB峰值和OS断电窗口未验收。
 - v1 保存来源/记忆；完整 Session/附件迁移包与大包流式恢复为 Planned。
 - 本项目生产/开发audit当前0公告，依赖修复已有实测、撤回公告feed单独核实；这不更新用户现有HostSDK或证明所有缺陷消失。见[MCP范围](docs/engineering/MCP_TRANSPORT.md)。公开发布尚未批准。
 
@@ -69,9 +70,11 @@ pnpm lint
 pnpm format:check
 pnpm test
 pnpm test:runtime
+pnpm test:interruption
 # 先克隆官方源码，再执行固定 SHA 真实运行测试：
 pnpm test:pinned
 pnpm build
+pnpm test:resources -- --repeat=2
 pnpm check:docs
 ```
 

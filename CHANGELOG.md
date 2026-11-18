@@ -24,6 +24,9 @@
 - Offline packed documentation now verifies every local target in the actual installed tarball. Code-of-conduct is included; lockfile belongs to separate source ZIP; private evidence paths are explicit local-only records, not missing download links.
 - Generated delivery documents are excluded from source-doc checks, with a public quality self-test red→green regression.
 
+- Added nine real import interruption/cancellation/attachment-failure checkpoints with fresh-process retry, exact originals and conservative partial-session retention.
+- Added bounded1/8/32MiBsyntheticZIPpreview resource observations, limits andgenuinelyin-flightcancel checks;default128/512/64MiBRSSstress remainsunvalidated.
+
 ### Compatibility / 兼容
 
 - Published npm baseline0.2.2-rc.4，audited GitSHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`，Node24.22.3，pnpm11.28.5。

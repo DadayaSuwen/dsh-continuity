@@ -7,6 +7,15 @@
 - npm同版本与Git部分源码不同：实际使用接口9DIFF，entry比较31包/16DIFF。两个真实runtime路径各自测试，不用版本相等证明SHA。
 - 项目本地bootstrap commit `7db7a28`，固定点`5082575`；[双轴审查](CODE_REVIEW.md)发现已独立复现/修复。后续最终代码与tarball须再记录。
 
+## Maintenance round3 — 2026-11-19 03:05 CST
+
+- [导入中断验证](IMPORT_INTERRUPTION.md) /[English](IMPORT_INTERRUPTION.en.md):九种源保存/取消/计划ID/partialflush/fullflush/close/workspaceattach/importreceipt/挂接错误条件，实际测试进程exit73，freshprocess验证exit0。原件精确、完整SessionID复用、成员/绑定恢复；partial明确报错无覆盖，非OS断电/全事务验收。
+- [有界资源观察](RESOURCE_MEASUREMENTS.md) /[English](RESOURCE_MEASUREMENTS.en.md):8种case×2=16freshchild，1/8/32MiBstored/deflate合成二进制。32MiBpreviewstored430–494ms/deflate549–554ms，whole-childpeak约165–181MiB，含模块/fixture，非插件净值。
+- 已知8MiB−1entrylimit在5.90–6.58ms拒绝；32MiB异步inflatepending在途取消后128.89–141.19ms才观察AbortError。没有预先aborted替代、没有宣称立即中断同步JSON/CRC。
+- 生产代码/官方clone不改；新增测试脚本、typedworker、双语说明和已有E2E顺序执行命令。Vitest计数仍60；9checkpoint和8resourcecase各自报告。默认128/512/64MiB峰值、跨Host、复杂JSON/附件/断电窗口仍未测。
+- 本轮npm/stable/latest2e39e704各60/60、28文件实际重跑；MCP5checks、production/dev0公告、原highgateexit0。manifest只增加scripts，frozen/offlineinstall通过、lock无diff。
+- 首次手机尝试缺Playwright1.65.1的chromium1255/headlessshell，8个启动error、未进入UI，失败JUnit单独保留。使用officialinstall把exactrevision装到project.toolchain，明确PLAYWRIGHT_BROWSERS_PATH后完整官方Web/Slot重跑8/8（21.2s）；浏览器/界面测试源代码没有改动，也没有静默换浏览器来掩盖环境。
+
 ## Maintenance round2 — 2026-11-19 01:55 CST
 
 - [公共MCPprobe回归](MCP_TRANSPORT.md)2.2.0先红：307转发5次合成header及541正文bytes，302转发2header；项目SDK2.3.0override后目标0请求，5checks通过。直连/同源HTTP及stdio真实运行未变。

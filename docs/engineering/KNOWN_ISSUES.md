@@ -1,6 +1,6 @@
 # 已知问题 / Known issues
 
-更新：2026-11-19 01:55 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
+更新：2026-11-19 03:15 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
 
 ## 需要外部证据 / External acceptance
 
@@ -15,7 +15,7 @@
 6. **格式与原件**：官方导出只认v3。ZIP 内未知字段、全分支、THINK/工具/未完成内容保留在原始资产；不保证均进入正式上下文。缺正文的非图片附件不重建。官方公开 `./src/*` importer seam 需构建转译和固定兼容测试。
 7. **备份范围**：v1 包含 sources/memory/墓碑，不含完整 Session logs、bindings、import receipts、游标、独立附件对象、credentials/Host config。启用采集的新轮原始切片可在 sources 中保存，但这不是全 Session 恢复。
 8. **缺源恢复**：用户删原件后引文仍可导出，包会明确列 `omitted_source_ids`。恢复的缺源记忆为 unknown、candidate、unconfirmed；未提供丢失原件，原始来源真实性仍待核实。
-9. **大文件与故障**：默认128MiB上传/512MiB展开/64MiB条目/10k文件/200倍比率有检查，但副本/缓存会提高RSS；未做峰值压力验收。多Session/附件/来源/Workspace写入不是全事务，某些崩溃窗口仍需手工核对保留的收据。
+9. **大文件与故障**：1/8/32MiB合成二进制归档预览已测，whole-child32MiB峰约165–181MiB，含fixture/imports，不是插件净内存上限。默认128MiB上传/512MiB展开/64MiB条目峰值、复杂文本/大量节点未验收。九个durable milestone硬退出/取消/挂接故障的重启通过；partialSession明确报错保留。OS断电、rename/fsync内部和附件/多Session全事务仍未覆盖。[资源报告](RESOURCE_MEASUREMENTS.md) · [中断报告](IMPORT_INTERRUPTION.md)。
 10. **预算**：预算覆盖整个插件header+JSON，以UTF-8字节作保守token代理，不覆盖全provider请求、其它插件与历史。官方token meter/compaction回归通过不等于任意模型窗口保证。
 11. **规则与状态**：规则只匹配明确中英文句式，不保证小说语义、角色台词真人判断或同义矛盾完全正确；用户审阅是核心。模型提取、embedding、独立新增候选UI、显示名/opaqueID改名、多用户分享是Planned。
 12. **并发部署**：同一domain写者在进程内统一排队、验证、原子update；绑定链按Host串行。跨进程/多Host共享存储未接受，不以此支持多writer部署。

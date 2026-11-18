@@ -11,13 +11,26 @@ on:
       - pnpm-lock.yaml
       - scripts/build.mjs
       - scripts/packed-smoke.mjs
+      - scripts/check-import-interruption.mjs
+      - scripts/measure-resources.mjs
       - scripts/quality/**
       - playwright.config.ts
       - cordis.patch.yml
       - .github/workflows/e2e.yml
   push:
     branches: [main]
-    paths: ['src/**', 'tests/e2e/**', 'scripts/packed-smoke.mjs', 'package.json', 'pnpm-lock.yaml']
+    paths:
+      [
+        'src/**',
+        'tests/e2e/**',
+        'tests/helpers/**',
+        'tests/fixtures/**',
+        'scripts/packed-smoke.mjs',
+        'scripts/check-import-interruption.mjs',
+        'scripts/measure-resources.mjs',
+        'package.json',
+        'pnpm-lock.yaml',
+      ]
 permissions:
   contents: read
 concurrency:
@@ -44,6 +57,10 @@ jobs:
         run: node scripts/packed-smoke.mjs
       - name: Real Cordis, storage, official import and production AgentLoop
         run: pnpm test:runtime
+      - name: Durable import hard-stop and restart checkpoints
+        run: pnpm test:interruption
+      - name: Bounded synthetic preview measurements (not RSS ceiling acceptance)
+        run: pnpm test:resources -- --repeat=2
       - name: Install only Chromium for declared mobile views
         run: pnpm exec playwright install --with-deps chromium
       - name: Native DSH mobile workflow
@@ -52,8 +69,10 @@ jobs:
         if: always()
         with:
           name: runtime-mobile-evidence
+          include-hidden-files: true
           path: |
             test-results/
+            .runtime/round-3/resource-*/results.json
             playwright-report/
           if-no-files-found: error
           retention-days: 14
