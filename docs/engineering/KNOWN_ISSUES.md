@@ -1,16 +1,39 @@
 # 已知问题 / Known issues
 
-## P0 evidence in progress
+更新：2026-11-19 00:17 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
 
-1. 最新 DSH 为 Developer Preview `0.2.2-rc.4`，接口随 SHA 变化；本项目尚未完成兼容运行，不标兼容已通过。
-2. 官方 DeepSeek import 只支持 export format `3` 且 ZIP 保持在内存中；全部 ZIP 与单条目需明确限制，手机远端应使用 HTTPS 和已验证 owner Connection。
-3. 官方 importer 主入口未 re-export 运行时函数，但 `./src/*` 已公开；依赖 source subpath 需要单点构建转译，属于需要固定兼容测试的 seam。
-4. 官方 ZIP 引擎未提供跨导入去重、预览选择、全分支恢复和原始 ZIP 留存；需要插件增量实现，原始记录必须独立保留。
-5. 官方路径为 `agent.inject()` durable inbox / `systemPrompt.context()` durable context snapshot；model-visible 内容有日志记录。项目不修改原始已提交事件，也不声称隐形注入。
-6. 官方 SessionPersistence/Attachment 没有删除能力；“删除原始资产/记忆”与“删除正式 DSH Session/附件”必须分别告知，后者遵循 Host 自身管理。暂停/卸载插件默认保留数据。
-7. 默认规则候选提取覆盖有限明确表达，不等同于任意长篇对话的可靠语义理解。用户确认与来源引用是硬约束；可选模型提取仍需独立验证。
-8. 真实 DeepSeek 官方 App 导出文件和多个真实模型角色表现尚无验收样本；先验证官方 schema 合成夹具，保留真实性验收项。
-9. 主机现有 Node22/pnpm9不满足当前上游要求，已准备隔离 Node24/pnpm11。
-10. Official clone/network 下载较慢，继续审计官方 raw 与已发布同版本 npm 源码，最终以克隆实际 SHA 记录。
+## 需要外部证据 / External acceptance
 
-状态会随实际测试证据更新；未通过项保留，不删测试以掩盖问题。
+1. **真实导出与模型质量**：当前仅合成官方 schema 和 scripted 外部模型 IO。待用户明确允许的实际 App ZIP、至少两个真实模型的人设/关系/剧情回归；真实调用可能涉及额度，另行确认。
+2. **上游 latest**：稳定 ca33fd SHA 已测试，`0.2.2-rc.4` npm 单独测试。最新官方 clone 三次 ETIMEDOUT/connection reset，未运行最新源码。`ls-remote` SHA `2e39e70496aa02986ca6a820c5d497e816b69d7e` 仅发现证据。每日 workflow 不自动换 pin。
+3. **公开供应链 gate**：完整开发 Host 仍有picomatch4.0.7 high和3项moderate；high暂无已发布修复。undici已项目内精确override8.12.2，fflate已升级0.8.3，生产audit现为0公告。不降低audit阈值；发布gate仍失败，开发漏洞单列。
+4. **远端治理与发布**：八工作流是本地代码，cloud Actions/CodeQL/actionlint尚无运行证明；CODEOWNERS 模板未启用，branch/environment/人类 reviewer/npm trusted publishing 未配置。只交付发布准备，无 public writes。
+5. **首次 governance bootstrap**：trusted-base checker 首次进入空基线时不存在。人类需在公开仓库确认前检查初始化 snapshot，将可信 gate 放入 main 后再开启 required status；任何当前 PR 不执行自己的修改版审批器，不设置自动通过。
+
+## 当前功能上限 / Product ceilings
+
+6. **格式与原件**：官方导出只认v3。ZIP 内未知字段、全分支、THINK/工具/未完成内容保留在原始资产；不保证均进入正式上下文。缺正文的非图片附件不重建。官方公开 `./src/*` importer seam 需构建转译和固定兼容测试。
+7. **备份范围**：v1 包含 sources/memory/墓碑，不含完整 Session logs、bindings、import receipts、游标、独立附件对象、credentials/Host config。启用采集的新轮原始切片可在 sources 中保存，但这不是全 Session 恢复。
+8. **缺源恢复**：用户删原件后引文仍可导出，包会明确列 `omitted_source_ids`。恢复的缺源记忆为 unknown、candidate、unconfirmed；未提供丢失原件，原始来源真实性仍待核实。
+9. **大文件与故障**：默认128MiB上传/512MiB展开/64MiB条目/10k文件/200倍比率有检查，但副本/缓存会提高RSS；未做峰值压力验收。多Session/附件/来源/Workspace写入不是全事务，某些崩溃窗口仍需手工核对保留的收据。
+10. **预算**：预算覆盖整个插件header+JSON，以UTF-8字节作保守token代理，不覆盖全provider请求、其它插件与历史。官方token meter/compaction回归通过不等于任意模型窗口保证。
+11. **规则与状态**：规则只匹配明确中英文句式，不保证小说语义、角色台词真人判断或同义矛盾完全正确；用户审阅是核心。模型提取、embedding、独立新增候选UI、显示名/opaqueID改名、多用户分享是Planned。
+12. **并发部署**：同一domain写者在进程内统一排队、验证、原子update；绑定链按Host串行。跨进程/多Host共享存储未接受，不以此支持多writer部署。
+13. **手机**：完整官方Web与原生Slot的两个视口8/8通过。真实Android/iOS软键盘、OS文件选择/下载、路由前缀/transport carrier、网络切换和回主会话导航待实机验收。UI当前中文；英文docs不是英文UI测试。
+14. **删除**：插件记忆/来源删除不删除正式Session/附件，也不抹掉旧日志快照和既有模型回复。官方审计API无正式Session/Attachment delete；卸载默认保留数据。
+
+15. **v1来源数量**：每包最多1000included与1000omitted source IDs；export和restore保存前都检查并显式报错。长期采集需分批资产管理，超过上限未提供自动分包UI。
+
+## 已复现并修复 / Reproduced and fixed
+
+- 同版已发布Web丢失stylesheet metadata、sidebar内overlay几何：兼容样式安装 + Portal。
+- 默认Workspace初始化晚于panel首次读取：限时重读 + “刷新保存位置”。
+- 编辑后提取同ID重复、编辑后删除原文本复活、老backup回灌删除记录：稳定ID去重和墓碑。
+- 恢复信任独立preview/assistant升user：从raw重新预览 + 原说话者/分类逐字校验。
+- 首次并发Session归属覆盖：串行check/existence/write。
+- 10001记忆/20001墓碑耐久后重启损坏：统一schema/唯一ID/范围校验在写入之前。
+- 历史失败让新成功续聊永久报错：仅检查本次新增事件。
+- alternate branch提取默认剧情、source id对Session scope错配、已运行Agent忽略新模型：显式branch联动、receipt映射、official model.select。
+- context编辑/删除与真实official compaction：最新snapshot supersession、未变去重、旧event前缀保持。
+
+来源：[当前进度](PROGRESS.md)、[固定点审查](CODE_REVIEW.md)、[运行证据](RUNTIME_EVIDENCE.md)、[实现](../../src/plugin.ts)。最终打包仍须从最终版本重跑；旧绿记录不替代新tarball。

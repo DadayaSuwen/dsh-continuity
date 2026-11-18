@@ -20,8 +20,9 @@ it('backs up original bytes and approved memory and restores into a different ex
   cleanup.push(first.dispose);
   const migration = new Migration(first.ctx, first.domain, {});
   const memory = new Memory(first.domain);
+  const source = companionZip();
   const imported = await migration.commit(
-    companionZip(),
+    source,
     'original.zip',
     companionScope,
     ['c1'],
@@ -44,7 +45,7 @@ it('backs up original bytes and approved memory and restores into a different ex
   expect(
     new Migration(second.ctx, second.domain, {}).source(destination, imported.source_id)
       ?.raw_base64,
-  ).toBe(Buffer.from(companionZip()).toString('base64'));
+  ).toBe(Buffer.from(source).toString('base64'));
   expect(new Memory(second.domain).list(companionScope)).toEqual([]);
   const parsed = JSON.parse(new TextDecoder().decode(backup));
   parsed.payload.memories.memories[0].content = 'corrupted';

@@ -66,6 +66,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Stdlib quality, type/lint/docs/license/secret contracts
         run: node scripts/quality/self-test.mjs && pnpm typecheck && pnpm lint && pnpm format:check && pnpm check:docs && pnpm check:licenses && node scripts/check-secrets.mjs
+      - name: Block preparation on high dependency advisories
+        run: pnpm audit --audit-level high
       - run: node scripts/quality/clone-pinned.mjs
       - run: pnpm check:compatibility
       - name: Audited SHA real source tests

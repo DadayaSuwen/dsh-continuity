@@ -1,38 +1,49 @@
 # 产品需求 / Product requirements
 
-## Positioning
+[English](PRD.en.md) · [用户流程](USER_FLOWS.md) · [架构](../architecture/ARCHITECTURE.md)
 
-**DSH Continuity**（项目包名 `dsh-continuity`）是官方 DSH bundle 扩展，不是浏览器扩展、聊天客户端或新的 Harness。产品使命为保存用户自己的聊天资产并提供可审阅的角色记忆，帮助换会话和模型后继续对话。不涉及平台额度规避。
+## 定位
 
-## User outcome
+**DSH Continuity**（`dsh-continuity`）是使用官方DSH bundle机制的独立可安装扩展。它不是DeepSeek官方产品、浏览器扩展、独立聊天客户端或另一套Harness。使命是保存用户自己的聊天资产，提供可审阅的角色记忆，换会话/模型后继续；不规避平台额度。
 
-在手机/电脑选择 DeepSeek 官方导出 ZIP → 本机 DSH 预检和报告 → 选择来源对话与角色 → 官方 Session → 确认角色/关系/经历/剧情记忆 → 新会话恢复 → 完整备份。
+## 用户结果
 
-界面称“对话”“角色”“记忆”，技术词保留在开发文档。TXT/Markdown/通用 JSON/粘贴是应急通道，未知角色与时间显式标为未知。
+手机/电脑选官方DeepSeek ZIP → 当前连接DSH Host预检 → 选来源对话/分支/角色 → 官方Session → 审核人设/用户/关系/经历/剧情候选 → 继续或新建带已确认资料的会话 → 备份。
 
-## MVP acceptance seams
+界面用“对话 / 角色 / 记忆”；Session/Agent技术词在工程文档。标注说话者的TXT/Markdown/通用JSON/粘贴为应急通道，未知日期和角色仍未知。
 
-1. Migration preview/commit：官方格式 v3、消息树/附件/状态报告、保留原始来源、明确选项、错误可见、相同来源去重。
-2. Character memory：Persona/User/Relationship/Episodic/Story 类型，候选与已确认状态、出处、隔离、矛盾提示、编辑/删除/导出。
-3. Session continuation：官方持久化与 Agent factory；创建/恢复/重启不修改来源日志。
-4. Recovery：绑定 owner + stable agent + character + story + Session；严格归属；相关性/重要性/衰减/预算；当前剧情优先；官方日志化 context 去重。
-5. Mobile：DSH native Web slot，系统文件选择/粘贴/解析进度/报告/确认/恢复/备份；390×844 与 360×800 等视口真实浏览器测试。
-6. Privacy：数据默认到当前已连接 DSH Host，在界面明确显示去向；不调用第三方记忆 API、不给数据训练用途；网络模型需显式选择。备份含私密内容，下载前明示。
-7. Engineering：官方包精确版本、Node24、pnpm11、真实 Cordis/Session/Storage/AgentLoop集成测试和恶意文件测试；CI 从初始化起运行。
+## 实现与验收状态
 
-## App export guidance
+本地工程预览已有Node24.22.3实际证据：npm运行版与固定审计源码版各60/60、28文件；390×844/360×800八项浏览器检查分别覆盖完整官方CLI Web与root Slot Host。查看[运行证据](../engineering/RUNTIME_EVIDENCE.md)，不从脚本存在推断成功。整体MVP仍**未接受**：用户允许的真实App导出、Android/iOS实机和live模型质量单列。没有公开npm/GitHub Release或cloudActions成功声明。
 
-仅描述“在已安装 App 中查看头像/设置/数据管理是否提供历史导出”，不同版本、地区和系统可能不同。不给未经实机核验的菜单写成统一入口；导出缺失时提供复制/分享文本备用路径。
+## MVP验收接口
 
-## MVP limits (not hidden)
+1. Migration：官方v3消息树/附件/状态报告、原字节保留、明确选择/错误、耐久重复识别与诚实部分结果。
+2. Memory：Persona/User/Relationship/Episodic/Story、候选/确认状态、逐字出处、严格归属、冲突、编辑/删除/导出；助手虚构不是现实用户事实。
+3. Continuation：官方持久化/factory和生命周期；创建/恢复/重启不改旧来源事件。显式模型选择要进入下一次真实请求。
+4. Recovery：owner + stable assistant + character + nullable story + Session binding；精确身份、相关性/重要性/衰减/整条预算、当前剧情优先和官方日志化去重context。插件envelope预算与全请求窗口保证不同。
+5. Mobile：原生DSH Web slot，系统文件选择/粘贴/状态/报告/审阅/恢复/备份；390×844、360×800真实浏览器，实机文件/下载/软键盘另计。
+6. Privacy：明确数据发送到当前Host；无默认第三方记忆/模型提取/训练上传。续聊按用户选定Host模型与额度。下载前明示备份私密且明文。
+7. Engineering：官方精确peers、Node24/pnpm11、真实Cordis/Storage/Session/Query/AgentLoop/compaction和恶意文件检查，可重现CI/发布准备。从初始化纳入CI；trusted-base治理先经人类bootstrap落地再启required状态。
 
-- 官方只能认 DeepSeek export format v3；其他版本报告 unsupported。
-- 原始 ZIP 全分支保留；官方正式对话选择最新 finished 分支，其他内容在报告明确。MVP 的其他分支恢复标为 Experimental，禁止虚构原始时间。
-- 默认规则候选提取保留原话，不保证理解任意小说；用户确认/手工编辑是完整支持路径。可选模型批量提取单独评估，不默认调用。
-- 恢复不保证不同模型逐字同一人格；确定性资料召回与真实模型表现分开。
-- 原始资产删除与正式 DSH Session 删除是不同操作，Host API 当前无 Session删除能力；界面说明删除范围。
-- 不公开发布、不消耗付费 API、不改生产账户和主机 DSH 核心。
+## App导出指引
 
-## Priorities
+用户在自己已安装版本的头像/设置/数据管理查看导出是否可用。版本、地区、系统不同；没有实机证据证明统一必有菜单。缺导出时复制/分享标注说话者文本，不伪造原时间/角色。
 
-P0 证据审计 → P1 官方导入纵向闭环 → P2 候选/确认记忆 → P3恢复 → P4手机 UI → P5开源发布准备。高级向量/跨平台全适配/独立App暂不引入。
+## 明示上限
+
+- 官方DeepSeek只认v3，其它版本报告unsupported。
+- 默认current_message_id选祖先链，否则取最大消息id；FINISHED筛回复，不找分支。显式leaf选择现已同时驱动commit和extract，全部rawbranch仍保留。
+- 关键词规则需审阅，不保证任意小说语义。batchEveryTurns默认0，可选nativeSession采集只产候选；模型提取/向量库Planned。
+- 当前明确身份也是UI名称。显示名/opaqueID分离改名、多用户共享Planned。
+- 不保证跨模型逐字同人格；确定性接线/召回与live模型质量分开。
+- v1保存source/memory/墓碑，不含完整Session logs、bindings、receipts、游标或独立附件。显式缺源残留引文恢复unknown候选；checksum不是加密/签名/身份认证，未来schema转换Planned。
+- 来源/记忆/正式Session/附件删除不同。官方Session/Attachment deleteAPI缺席；旧日志快照保留。
+- 大包peakRSS、长故障窗口、transportcarrier/proxyprefix、跨进程writer保持单独验收。
+- 公开仓库/发布、付费API、生产账号设置或DSH core修改需另行直接人类确认，本任务均未发生。
+
+## 优先级与追溯
+
+P0审计 → P1官方导入纵向切片 → P2可审记忆 → P3恢复 → P4手机 → P5开源发布准备。高级向量库、通用适配器和独立App不是MVP前置。
+
+实现：[迁移](../../src/migration/migration.ts)、[记忆](../../src/memory/memory.ts)、[恢复](../../src/recovery/recovery.ts)、[备份](../../src/migration/package.ts)、[客户端](../../src/ui/client.tsx)。未决验收见[已知问题](../engineering/KNOWN_ISSUES.md)和[进度](../engineering/PROGRESS.md)。

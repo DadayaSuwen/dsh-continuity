@@ -2,6 +2,7 @@ upstream
 .toolchain
 node_modules
 dist
+artifacts
 coverage
 .runtime
 .test

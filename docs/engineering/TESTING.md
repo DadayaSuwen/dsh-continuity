@@ -35,7 +35,7 @@ node "$PNPM_SCRIPT" check:compatibility
 - **npm runtime**：已安装 npm官方模块、插件 lifecycle与真实 production AgentLoop；仅外部模型 IO scripted，不访问付费模型。
 - **pinned source**：`pnpm test:pinned` 通过 [Lead runner](../../scripts/test-pinned.mjs) 与真实官方源码 Vite alias，不是 npm runtime 换一个标题。
 - **packed Loader**：`node scripts/packed-smoke.mjs` 运行显式 fresh `pnpm build` → actual `pnpm pack` →独立 OS temp consumer安装官方 runtime dependencies/peers及客户端Host外部依赖→原生 Node host/client import→真正官方 Loader import/entry/Fiber创建。Consumer从环境移除 token/source aliases，不Mock；required host services缺席时 Fiber pending 不等于 activation，完整功能路径由 `test:runtime` 验证。
-- **手机浏览器**：`pnpm exec playwright install --with-deps chromium` 后 `pnpm test:mobile`；真实 DSH Web流程，390×844 与测试声明的其他 viewport，以 trace/screenshot/JUnit为准。未运行不能写成UI已验收。
+- **手机浏览器**：`pnpm exec playwright install --with-deps chromium` 后 `pnpm test:mobile`；runner先build，再启动隔离认证Host与完整官方CLI Web，使用ephemeralports和projectDocuments，结束关闭子进程。390×844、360×800八项当前通过，UI如实归属和scope；本机Chrome路径只用显式环境变量，CI使用标准PlaywrightChromium。不是Android/iOS实机或live模型质量证明。
 
 `pnpm test:coverage` 独立产生 cobertura相关证据，当前配置使用V8/text/lcov/json-summary；不虚构100%覆盖、不让空目录test/evaluation通过来冒充测试。`pnpm test:evaluation`只在真实测试已实现时声明成功。
 
@@ -51,6 +51,10 @@ node scripts/upstream-compatibility.mjs
 ```
 
 当前audited `ca33fd6843b205e279c7ccb6cb73a472c78f5760` 与 npm0.2.2-rc.4多个源码不同。同版本check只证明 installed manifest满足精确版本，**不**证明这个SHA运行。pinned/latest输出必须记录实际SHA、exit code和Runner路径。
+
+## 当前运行记录
+
+Node24.22.3：npm与exactauditedSHA各60/60、28文件；两个手机视口共8/8。结果不是MVP接受，真实App/export/model仍单列。详见[运行证据](RUNTIME_EVIDENCE.md)和[兼容](COMPATIBILITY.md)。Playwright失败attachments在ignored `.runtime/browser-results`，不会清空其他 `test-results` 报告；日志token须脱敏，生产数据不作为CIartifact。
 
 ## stdlib检查的范围
 

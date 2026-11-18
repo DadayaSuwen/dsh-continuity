@@ -38,6 +38,10 @@ Generator默认示例context `required`、`review`，人工应用前需按实际
 
 Default sample contexts are placeholders pending observed emitted names. An accepted request is not proof of effective enforcement; read back settings and exercise a real PR after applying. None of those remote commands was executed here.
 
+## Bootstrap prerequisite / 首次初始化前提
+
+本地fixedpoint5082575是空tree，risk-review脚本在bootstrap7db7a28才加入。首次PR的trustedbase尚无checker，job会明确失败而不是人类审批后自动转绿。计划中的远端仓库需人类在启用requiredreviewstatus之前审查初始化snapshot与gate、从可信main开始其后PR；如果现有base为空，不配置此status为required直到可信gate落地并实际运行。这个人工顺序不是AIapproval、不是auto-merge，也不授予PRhead修改gate的权限。本任务未执行远端初始化或设置。
+
 ## Release protected environment是另一道人工门
 
 确认后维护者配置 **release**：required HUMAN reviewer（非initiator）、prevent self-review、disallow bypass、selected main branch及v* tag。不将AI判断接入approval。未配置保护时 `RELEASE_HUMAN_APPROVAL_CONFIGURED` 留空使准备job失败。若仓库计划不支持 required-reviewer，则维持关闭而非用无保护environment冒充人工审批。

@@ -47,7 +47,10 @@ test('phone workflow through real DSH Host and native Slot: ZIP → memory → n
   );
   expect(overflow).toBe(false);
   expect(errors).toEqual([]);
-  await page.screenshot({ path: 'test-results/mobile-390x844.png', fullPage: true });
+  await page.screenshot({
+    path: `test-results/mobile-${page.viewportSize()!.width}x${page.viewportSize()!.height}.png`,
+    fullPage: true,
+  });
 });
 
 test('phone text fallback and errors leave roles and dates honest', async ({ page }) => {

@@ -14,7 +14,7 @@
 | [docs.yml](../../.github/workflows/docs.yml)                           | 本地链接/anchor、中英 README 结构、真实 Config 与 workflow 脚本引用          | 文档/配置/治理路径或手动                                                           |
 | [test-matrix.yml](../../.github/workflows/test-matrix.yml)             | Ubuntu 与 Windows，Node 24.22.3，npm DSH 0.2.2-rc.4                          | 源码/测试/工具链路径或手动；不虚构其他已支持版本                                   |
 | [security.yml](../../.github/workflows/security.yml)                   | tracked secrets、installed runtime 许可证、registry audit、依赖 diff、CodeQL | 相关路径、每周或手动；CodeQL 仅写 security events                                  |
-| [dsh-compatibility.yml](../../.github/workflows/dsh-compatibility.yml) | exact SHA `pnpm test:pinned`；latest master 真实源码探针及失败 issue         | pinned 在相关 PR；latest 只每周/手动，失败 issue 由不 checkout 上游的独立 job 创建 |
+| [dsh-compatibility.yml](../../.github/workflows/dsh-compatibility.yml) | exact SHA `pnpm test:pinned`；latest master 真实源码探针及失败 issue         | pinned 在相关 PR；latest 只每日/手动，失败 issue 由不 checkout 上游的独立 job 创建 |
 | [e2e.yml](../../.github/workflows/e2e.yml)                             | 真实 pack/Loader、npm runtime、手机浏览器                                    | 功能路径或手动；只安装 Chromium                                                    |
 | [governance.yml](../../.github/workflows/governance.yml)               | 可信 base policy + 当前 HEAD 人类维护者审批                                  | PR metadata；8分钟；无依赖安装/PR head 执行；Review 后重跑原 PR job                |
 | [release.yml](../../.github/workflows/release.yml)                     | 精确 tag/版本/commit、防重复、人为 environment、重新验收、tarball/草稿       | `workflow_dispatch` 或 `v*` tag；单全局队列，不中断已开始准备；零公开写入          |
@@ -49,7 +49,7 @@
 2. 设置 environment variable `RELEASE_HUMAN_APPROVAL_CONFIGURED=true` 是维护者配置声明，不是 AI approval，也不替代 GitHub 真实 required-reviewer rule；初始默认缺失即失败。
 3. 输入 exact semver，匹配 package version、`COMPATIBILITY.pluginVersion`、已存在 `vVERSION` tag 与 checkout HEAD；commit 在 main历史。手动 dispatch 必须从 main启动。
 4. [预检](../../scripts/quality/release-preflight.mjs) 只读检查 registry version/GitHub Release不存在；网络错误失败。全局并发串行化，并在 environment Review 后再检一次，防 stale 检查。
-5. 重新运行质量、exact SHA、npm runtime、pack与浏览器检查；[准备脚本](../../scripts/quality/release-prepare.mjs) 校验被 Loader 测过的 exact tarball SHA256，保留 tarball/checksums/local GitHub Release draft及日志。
+5. 重新运行质量、high依赖audit、exact SHA、npm runtime、pack与浏览器检查；当前picomatch high仍让gate失败，不降低阈值。[准备脚本](../../scripts/quality/release-prepare.mjs) 校验被 Loader 测过的 exact tarball SHA256，保留 tarball/checksums/local GitHub Release draft及日志。
 6. 本工作流没有 npm/GitHub发布命令、`contents: write`、`id-token: write`、npm token。真正公开 npm publish/GitHub Release 是**另一项需用户明确确认、人类 Review 的变更**，尚未执行。
 
 `environment: release` 单独写在 YAML 会在某些条件下创建未保护 environment；因此不可宣称 YAML 自带人为 approval。参见 [GitHub environment rules](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)。

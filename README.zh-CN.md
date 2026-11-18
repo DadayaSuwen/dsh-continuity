@@ -35,7 +35,7 @@ dsh web
 
 源码审计基准：[`master` SHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760)，版本 **0.2.2-rc.4**。部分同版本 npm 源码与 Git checkout 有差异，发布包运行测试与固定 SHA 源码运行测试分开记录。
 
-已实际执行真实 Cordis、原生 Storage、JSONL、Workspace/Connection 与生产 AgentLoop。390×844 手机原生 Slot 流程已通过真实认证 DSH Host；完整官方 Web 验收正在收尾。合成/脚本模型测试证明接线和确定性召回，不冒充真实模型人格质量。最新证据见[运行记录](docs/engineering/RUNTIME_EVIDENCE.md)、[兼容元数据](COMPATIBILITY.json)和[开发进度](docs/engineering/PROGRESS.md)。
+已实际执行真实 Cordis、原生 Storage、JSONL、Session Query、Workspace/Connection、生产 AgentLoop 与官方压缩：npm 运行版 **60/60**，固定官方 SHA 源码版 **60/60**。手机 **8/8** 覆盖390×844、360×800，分别运行完整官方 CLI Web profile 与小型 native Slot Host fixture。合成/脚本模型只证明接线和确定性召回，不冒充真实 Android/iOS 或模型人格质量。见[运行记录](docs/engineering/RUNTIME_EVIDENCE.md)、[兼容元数据](COMPATIBILITY.json)和[开发进度](docs/engineering/PROGRESS.md)。
 
 DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护者，不自动替换稳定 pin。
 
@@ -50,8 +50,8 @@ DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护�
 ## 限制
 
 - DeepSeek 官方导出格式仅 **v3**。App 菜单随版本、系统、地区变化，不宣传通用必有入口。
-- 原始 ZIP 全部保留；正式 Session 转换采用一个选中消息链。其他分支和被排除内容有报告，不虚构。其他叶分支恢复为 Experimental。
-- 规则提取保守候选，不等于任意长篇小说的可靠语义理解；写入前由用户确认。模型提取/评估为 Planned、显式启用。
+- 原始 ZIP 全部保留；正式 Session 转换与规则提取采用同一选中leaf。其他分支和被排除内容仍在原件和报告中。
+- 规则候选不等于任意长篇小说的可靠语义理解。`batchEveryTurns=0` 默认关闭新消息采集；启用后仍只产生待审核候选，无模型提取调用。
 - 恢复通过官方日志化 context snapshot；不改原始已提交事件，不承诺隐形注入。
 - 身份使用明确分区键；多用户共享、名称与 ID 分离改名体验为 Planned。
 - v1 保存来源/记忆；完整 Session/附件迁移包与大包流式恢复为 Planned。

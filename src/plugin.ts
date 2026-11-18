@@ -7,7 +7,7 @@ import type {} from '@deepseek-ai/dsh-session-query';
 import { SessionId } from '@deepseek-ai/dsh-session';
 import { randomUUID } from 'node:crypto';
 import { continuityDomain, scopeKey, sourceKey } from './storage.ts';
-import { digest } from './migration/preview.ts';
+import { digest, previewImport } from './migration/preview.ts';
 import type { ContinuityDomain } from './storage.ts';
 import { Memory } from './memory/memory.ts';
 import { Migration } from './migration/migration.ts';
@@ -63,6 +63,8 @@ export class Continuity extends Service {
   private readonly lifetime = new AbortController();
   private readonly extraction = new Map<string, Promise<void>>();
   private readonly queries = new WeakMap<Agent, string>();
+  // ponytail: serial identity writes per Host; use per-Session queues if measured contention warrants it.
+  private bindingChain = Promise.resolve();
 
   constructor(
     ctx: Context,
@@ -109,6 +111,7 @@ export class Continuity extends Service {
     ctx.effect(
       () => async () => {
         this.lifetime.abort(new Error('continuity plugin is unloading'));
+        await this.bindingChain;
         await this.migration.drain();
         await Promise.all(this.extraction.values());
         await this.memory.drain();
@@ -127,30 +130,57 @@ export class Continuity extends Service {
     this.assertOwner(scope);
     return buildRecovery(scope, this.memory.list(scope), {
       tokenBudget: this.config.contextTokenBudget,
-      ...(sessionId === undefined ? {} : { sessionId }),
+      ...(sessionId === undefined
+        ? {}
+        : {
+            sessionId,
+            sessionSources: [...this.domain.table('imports').entries()]
+              .map(([, receipt]) => receipt)
+              .filter(
+                (receipt) =>
+                  receipt.session_id === sessionId &&
+                  receipt.status === 'imported' &&
+                  sameScope(receipt, scope),
+              )
+              .flatMap((receipt) =>
+                [receipt.source_id, ...(receipt.source_alias_ids ?? [])].map((source_id) => ({
+                  source_id,
+                  conversation_id: receipt.conversation_id,
+                })),
+              ),
+          }),
       query,
     });
   }
 
-  async bind(scope: MemoryScope, sessionId: string): Promise<void> {
+  bind(scope: MemoryScope, sessionId: string): Promise<void> {
     this.assertOwner(scope);
-    const id = SessionId(sessionId);
-    const existing = this.domain.table('bindings').get(sessionId);
-    if (existing && !sameScope(existing, scope))
-      throw new ImportError(
-        'binding-conflict',
-        'This Session belongs to another character; create a fresh conversation',
-      );
-    if (!this.ctx.agents.get(id) && !(await this.ctx.sessionPersistence.stat(id)))
-      throw new ImportError('session-not-found', 'Session does not exist');
-    await this.domain
-      .table('bindings')
-      .put(
-        sessionId,
-        BindingSchema.parse({ ...scope, session_id: sessionId, created_at: Date.now() }),
-      );
-    const agent = this.ctx.agents.get(id);
-    if (agent) this.installRecovery(agent);
+    const run = this.bindingChain.then(async () => {
+      this.lifetime.signal.throwIfAborted();
+      const id = SessionId(sessionId);
+      const existing = this.domain.table('bindings').get(sessionId);
+      if (existing && !sameScope(existing, scope))
+        throw new ImportError(
+          'binding-conflict',
+          'This Session belongs to another character; create a fresh conversation',
+        );
+      if (!this.ctx.agents.get(id) && !(await this.ctx.sessionPersistence.stat(id)))
+        throw new ImportError('session-not-found', 'Session does not exist');
+      if (!existing)
+        await this.domain
+          .table('bindings')
+          .put(
+            sessionId,
+            BindingSchema.parse({ ...scope, session_id: sessionId, created_at: Date.now() }),
+          );
+      const agent = this.ctx.agents.get(id);
+      if (agent) this.installRecovery(agent);
+    });
+    this.bindingChain = run.then(
+      () => {},
+      () => {},
+    );
+    return run;
   }
 
   async continueSession(
@@ -161,11 +191,25 @@ export class Continuity extends Service {
     this.assertOwner(scope);
     await this.bind(scope, sessionId);
     const existing = this.ctx.agents.get(SessionId(sessionId));
-    if (existing) return existing;
+    if (existing) {
+      if (options.provider && options.model)
+        existing.model.select({
+          provider: options.provider,
+          model: options.model,
+          ...(options.reasoningEffort ? { reasoningEffort: options.reasoningEffort } : {}),
+        });
+      return existing;
+    }
     const handle = await this.ctx.agents.resume({
       resumeSessionId: SessionId(sessionId),
       agentOptions: options,
     });
+    if (options.provider && options.model)
+      handle.agent.model.select({
+        provider: options.provider,
+        model: options.model,
+        ...(options.reasoningEffort ? { reasoningEffort: options.reasoningEffort } : {}),
+      });
     this.handles.set(sessionId, handle);
     return handle.agent;
   }
@@ -257,45 +301,23 @@ export class Continuity extends Service {
         );
         const hash = digest(bytes);
         const sourceId = `source:${hash}`;
-        const preview = {
-          source_id: sourceId,
-          filename: `session-${sessionId}.json`,
-          format: 'generic-json' as const,
-          byte_count: bytes.length,
-          conversation_count: 1,
-          message_count: messages.length,
-          attachment_count: 0,
-          conversations: [
-            {
-              id: sessionId,
-              title: null,
-              digest: hash,
-              message_count: messages.length,
-              attachment_count: 0,
-              branches: [messages.at(-1)!.id],
-              active_branch: messages.at(-1)!.id,
-              messages,
-              warnings: [
-                'Exact official Session event snapshot; non-text content is preserved in raw events',
-              ],
-              supported: true,
-            },
-          ],
-          warnings: ['Review-only DSH Session capture; no model extraction call'],
-        };
-        await this.domain
-          .table('sources')
-          .put(
-            sourceKey(scope, sourceId),
-            SourceSchema.parse({
-              ...scope,
-              source_id: sourceId,
-              digest: hash,
-              raw_base64: Buffer.from(bytes).toString('base64'),
-              preview,
-              created_at: Date.now(),
-            }),
-          );
+        const preview = await previewImport(
+          bytes,
+          `session-${sessionId}.json`,
+          this.config,
+          this.lifetime.signal,
+        );
+        await this.domain.table('sources').put(
+          sourceKey(scope, sourceId),
+          SourceSchema.parse({
+            ...scope,
+            source_id: sourceId,
+            digest: hash,
+            raw_base64: Buffer.from(bytes).toString('base64'),
+            preview,
+            created_at: Date.now(),
+          }),
+        );
         candidates = await this.memory.extract(scope, sourceId, sessionId);
       }
       const lastSeq = snapshot.events.at(-1)?.seq ?? cursor;

@@ -2,31 +2,61 @@
 
 ## Baseline
 
-- Git: <https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760>
-- Branch: master; commit timestamp 2026-11-17T22:17:01+08:00; version 0.2.2-rc.4.
-- Node24.22.3 win-x64, pnpm11.28.5. Official Node archive SHA256 verified against nodejs.org published SHASUMS256.
-- Official clone stays clean; standalone bundle project main is independent.
-- Published rc.4 npm entry source differs from master in several packages. Both real published runtime and source-alias runtime are tested, with no promise that all package internals are byte-identical.
+- Official [`master` SHA ca33fd6843b205e279c7ccb6cb73a472c78f5760](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760)，commit 2026-11-17T22:17:01+08:00，version **0.2.2-rc.4**；只读clone保持clean。
+- Isolated **Node24.22.3 win-x64 / pnpm11.28.5**。Node archive校验和来自nodejs.org；PATH与子生命周期明确固定24，不沿用主机默认22。
+- npm同版本与Git部分源码不同：实际使用接口9DIFF，entry比较31包/16DIFF。两个真实runtime路径各自测试，不用版本相等证明SHA。
+- 项目本地bootstrap commit `7db7a28`，固定点`5082575`；[双轴审查](CODE_REVIEW.md)发现已独立复现/修复。后续最终代码与tarball须再记录。
 
-## Executed
+## Executed — 2026-11-19 00:17 CST
 
-| Check                                            | Actual result at 2026-11-18 21:00 CST                    | Evidence level                                                                          |
-| ------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| TypeScript strict                                | Pass                                                     | installed official public declarations                                                  |
-| ESLint src/tests/config                          | Pass                                                     | local source, all findings corrected                                                    |
-| Full npm-runtime Vitest                          | 27/27, 10 files                                          | real Cordis/Storage/JSONL/AgentLoop/Workspace/Connection; scripted external model only  |
-| Pinned source-mode                               | 13/13, 9 files before expanded security suite            | official + Cordis sources aliased to exact SHA, no Core changes                         |
-| ZIP/JSON security                                | 16/16                                                    | synthetic hostile input, real preflight                                                 |
-| Official CLI --help / web --help                 | Pass                                                     | real @deepseek-ai/dsh CLI                                                               |
-| Official plugin --profile web add local checkout | Pass                                                     | isolated DSH_HOME, actual official Plugin Manager                                       |
-| Official full Web launch with installed bundle   | Host ready, no inactive plugin warning after peers fixed | native official profile, actual full Web client pending browser flow                    |
-| Native Slot browser launch                       | Pass                                                     | production Slot renderer; root harness supplies explicit no-selected-session source     |
-| Mobile full workflow                             | In progress, previous failures retained                  | real phone viewport; first React/GET body mode defects fixed, remaining flow re-running |
-| npm audit --prod high                            | 0 high/critical, 1 moderate                              | production closure separate from broad dev Host closure                                 |
-| npm audit full dev closure                       | 5 high/8 moderate                                        | broad official CLI deps; unresolved dev advisories gate release until assessed          |
+| Check                        | Actual command/result                                                               | Evidence and ceiling                                                                                                                                         |
+| ---------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Strict TypeScript            | `node node_modules/typescript/bin/tsc --noEmit`，**通过**                           | 官方published严格声明                                                                                                                                        |
+| ESLint/Prettier              | `eslint .` / `prettier --check .`，**通过**                                         | 最终本仓文件；upstream/ignored data不被格式化                                                                                                                |
+| Published npm runtime        | `node node_modules/vitest/vitest.mjs run`，**60/60，28files**                       | 真实Cordis/StorageJson/Domain/JSONL/SessionQuery/Workspace/Connection/AgentLoop/BasicCompaction/TokenMeter，模型IO scripted                                  |
+| Exact SHA runtime            | `node scripts/test-pinned.mjs`，**60/60，28files**                                  | official+vendor源aliases、标准decorator转换，Node v24.22.3记录到结果JSON                                                                                     |
+| Hostile ZIP/JSON             | runtime内 **16/16**                                                                 | 路径、CRC、重复、压缩比、大小、版本、严格UTF8/JSON、取消；不是任意文件形式全覆盖                                                                             |
+| Labelled continuity          | runtime内 **14/14**                                                                 | 人设/剧情/归属/预算/有效期/冲突固定检索案例；不是liveLLM质量                                                                                                 |
+| Lifecycle regressions        | runtime内通过                                                                       | 编辑重提取/删除墓碑/老包恢复、并发绑定、容量写前校验及重启、session范围、模型route switch、历史失败后成功续聊、officialcompaction后context修改/删除/未变去重 |
+| Official CLI/plugin manager  | `dsh --help` / `dsh web --help` / isolated `dsh plugin --profile web add`，通过     | 正式独立bundle配置；未改生产profile                                                                                                                          |
+| Mobile full matrix           | `node scripts/test-mobile.mjs`，**8/8**                                             | 390×844、360×800，每视口fullofficialCLIWeb和nativeSlot真实Host；ZIP→review→new→followup→backup、坏ZIP/粘贴/暂存、launch                                      |
+| Full official mobile UI      | matrix内两项通过                                                                    | 官方完整Web shell、nativeplugin模块、Portal与样式、异步Workspace；小rootSlot页面不是fullWeb，但分别有证据                                                    |
+| Build/pack/isolated Loader   | `node scripts/packed-smoke.mjs`，最近通过                                           | freshbuild→pack→独立consumer57包→原生host/clientexports→officialLoader entry；Host依赖故意缺席时Fiber pending不冒充activation                                |
+| Production registry audit    | `pnpm audit --prod --audit-level high`                                              | 0high/critical，0moderate；生产与开发闭包分开                                                                                                                |
+| Full development audit       | `pnpm audit --audit-level high`                                                     | undici8.12.2修复后1high/3moderate；picomatch4.0.7暂无发布fix，gate保留失败                                                                                   |
+| Default tracked secret check | `node scripts/check-secrets.mjs`，**135texts/0findings**（bootstrap）               | 1明确合成fixture排除；不扫描Git历史/所有credential形式，最终重跑                                                                                             |
+| License closure              | `node scripts/check-licenses.mjs`，**64真实manifests/0errors**                      | 当前runtime/required-peer/installed-optional闭包，非假dev平表                                                                                                |
+| Documentation contracts      | `node scripts/check-docs.mjs`，**47 Markdown / 572本地链接 / 8 workflows，0errors** | 固定本地链接/脚本/配置/权限合约，不声称外链全部可用                                                                                                          |
+| Latest official source       | 三次clone失败                                                                       | 只读ls-remote观察2e39e70496aa02986ca6a820c5d497e816b69d7e；ETIMEDOUT/reset，latestAPI/runtime未测，stablePinUnchanged                                        |
 
-## Boundaries
+## Coverage
 
-No real user chats or API keys read. No paid model calls. No repository pushed, npm published or GitHub Release created. Github workflows prepared locally, cloud runs and branch protection not claimed active.
+`node node_modules/vitest/vitest.mjs run --coverage` 实际60/60通过。V8后端：statements83.36%、branches71.33%、functions90.09%、lines85.01%；排除UI，包含低coverage的export-only入口，不声称完整代码或手机100%覆盖。原JSON/lcov在生成目录，下载报告以此范围为准。
 
-Private test credentials are ephemeral and live only in ignored test home; test report publication strips credentials. Fixed data is synthetic. Browser test assembly port3917/full official profile3918 are isolated from current running GUI3080.
+## Reproduction
+
+在项目目录使用隔离PATH，不改全局环境：
+
+```bash
+export PATH="$PWD/.toolchain/node-v24.22.3-win-x64:$PWD/.toolchain/pnpm/node_modules/.bin:$PATH"
+node scripts/quality/self-test.mjs
+node node_modules/typescript/bin/tsc --noEmit
+node node_modules/eslint/bin/eslint.js .
+node node_modules/vitest/vitest.mjs run
+node scripts/test-pinned.mjs
+# CI安装标准Chromium；本机existing浏览器路径仅显式env fallback：
+CONTINUITY_BROWSER_PATH="C:/Users/Dadaya/AppData/Local/ms-playwright/chromium-1228/chrome-win64/chrome.exe" node scripts/test-mobile.mjs
+node scripts/packed-smoke.mjs
+node scripts/check-docs.mjs
+node scripts/check-licenses.mjs
+node scripts/check-secrets.mjs
+node scripts/check-compatibility.mjs
+```
+
+Result files在ignored `test-results/`；手机失败attachments在ignored `.runtime/browser-results/`，避免Playwright清除其他证据。Phone runner使用两个ephemeralport/isolatehome与project-localDocuments，Host logs token redacted；截图按实际viewport命名。最终tarball有独立SHA256/Loader证据，文档更新后旧tarball需重pack。
+
+## Boundaries / 未测与未执行
+
+没有读取真实用户聊天或API key，没有paid模型调用。ScriptedModel仅证明运行接线与选中资料，不证明跨模型性格自然语言质量。真实App ZIP、Android/iOSpicker/download/softkeyboard、proxytransportprefix、压力/长故障窗口仍待单独验收。
+
+没有push仓库、npm publish、GitHubRelease、cloudActions/CodeQL、remotebranch/environment设置或AI自批准。发布准备新增highauditgate，已知high不通过就不宣布可公开发布。Project Mission整体MVP仍open；详见[兼容文档](COMPATIBILITY.md)、[进度](PROGRESS.md)和[已知问题](KNOWN_ISSUES.md)。

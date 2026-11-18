@@ -9,6 +9,7 @@ import { build } from 'esbuild';
 const require = createRequire(import.meta.url);
 await mkdir('.runtime', { recursive: true });
 const home = await mkdtemp(resolve('.runtime/mobile-run-'));
+await import('./build.mjs');
 await import('./build-mobile-test.mjs');
 const env = {
   ...process.env,
@@ -108,7 +109,10 @@ try {
       {
         result: status === 0 ? 'passed' : 'failed',
         node: process.version,
-        viewport: [390, 844],
+        viewports: [
+          [390, 844],
+          [360, 800],
+        ],
         home,
         officialProfile: true,
         data: 'synthetic only',

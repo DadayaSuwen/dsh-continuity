@@ -7,7 +7,43 @@
   "auditedAt": "2026-11-18T19:11:06+08:00",
   "node": "24.22.3",
   "pnpm": "11.28.5",
-  "validation": "pending",
+  "validation": "local-engineering-passed-mvp-acceptance-open",
+  "validatedAt": "2026-11-19T00:17:56+08:00",
+  "evidence": {
+    "publishedRuntime": {
+      "result": "passed",
+      "tests": 60,
+      "files": 28
+    },
+    "pinnedSourceRuntime": {
+      "result": "passed",
+      "tests": 60,
+      "files": 28
+    },
+    "mobile": {
+      "result": "passed",
+      "tests": 8,
+      "viewports": [
+        [390, 844],
+        [360, 800]
+      ]
+    },
+    "externalModelIo": "scripted-fixture-only",
+    "realAppExport": "not-tested",
+    "liveModelQuality": "not-tested",
+    "latestUpstream": "clone-failed-runtime-not-tested",
+    "publicPublication": "not-performed",
+    "productionAudit": {
+      "result": "passed",
+      "advisories": 0,
+      "fflate": "0.8.3"
+    },
+    "developmentAudit": {
+      "high": 1,
+      "moderate": 3,
+      "releaseGate": "blocked"
+    }
+  },
   "sources": [
     "packages/core/agent",
     "packages/core/agent-loop",

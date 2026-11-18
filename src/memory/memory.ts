@@ -3,7 +3,13 @@ import { MemorySchema, MemoryTypeSchema, ScopeSchema, sameScope } from '../model
 import type { CharacterMemory, MemoryScope, SourceAsset, SourceMessage } from '../model.ts';
 import { digest } from '../migration/preview.ts';
 import { ImportError } from '../security/archive.ts';
-import { emptyPartition, scopeKey, sourceKey } from '../storage.ts';
+import {
+  emptyPartition,
+  scopeKey,
+  sourceKey,
+  updateMemoryPartition,
+  drainMemoryPartitions,
+} from '../storage.ts';
 import type { ContinuityDomain, MemoryPartition } from '../storage.ts';
 
 export const ProposalSchema = z
@@ -23,6 +29,34 @@ export const ProposalSchema = z
   .strict();
 export type MemoryProposal = z.input<typeof ProposalSchema>;
 
+export function assertMemoryEvidence(
+  memory: Pick<CharacterMemory, 'memory_type' | 'source_excerpt' | 'source_kind'>,
+  message: SourceMessage | undefined,
+): void {
+  if (!message || !message.text.includes(memory.source_excerpt))
+    throw new ImportError('invalid-evidence', 'A memory must quote its original source message');
+  if (memory.source_kind === 'user-statement' && message.role !== 'user')
+    throw new ImportError(
+      'invalid-evidence',
+      'User-statement evidence must originate from a user message',
+    );
+  if (memory.source_kind === 'assistant-fiction' && message.role !== 'assistant')
+    throw new ImportError(
+      'invalid-evidence',
+      'Assistant-fiction evidence must originate from an assistant message',
+    );
+  if (
+    memory.memory_type === 'user' &&
+    (message.role !== 'user' ||
+      ['assistant-fiction', 'unknown', 'inference'].includes(memory.source_kind) ||
+      /剧情|角色扮演|故事|台词|fiction|roleplay/iu.test(message.text))
+  )
+    throw new ImportError(
+      'not-user-fact',
+      'Fiction or inference is not an explicit real user fact',
+    );
+}
+
 export function memoryFingerprint(
   memory: Pick<
     CharacterMemory,
@@ -40,7 +74,11 @@ export function memoryFingerprint(
   );
 }
 
-function activeMessages(asset: SourceAsset, conversationId: string): SourceMessage[] {
+function activeMessages(
+  asset: SourceAsset,
+  conversationId: string,
+  branchId?: string,
+): SourceMessage[] {
   const conversation = asset.preview.conversations.find((item) => item.id === conversationId);
   if (!conversation)
     throw new ImportError(
@@ -49,7 +87,9 @@ function activeMessages(asset: SourceAsset, conversationId: string): SourceMessa
     );
   const byId = new Map(conversation.messages.map((message) => [message.id, message]));
   const messages: SourceMessage[] = [];
-  let id = conversation.active_branch;
+  if (branchId !== undefined && !conversation.branches.includes(branchId))
+    throw new ImportError('invalid-branch', 'Selected branch is not a leaf of this conversation');
+  let id = branchId ?? conversation.active_branch;
   const seen = new Set<string>();
   while (id !== null) {
     if (seen.has(id)) throw new ImportError('invalid-tree', 'Source message cycle');
@@ -64,7 +104,6 @@ function activeMessages(asset: SourceAsset, conversationId: string): SourceMessa
 
 /** Review-first memories. One atomic partition update owns confirmation, conflicts and deletion tombstones. */
 export class Memory {
-  private readonly queues = new Map<string, Promise<void>>();
   constructor(
     private readonly domain: ContinuityDomain,
     private readonly now: () => number = Date.now,
@@ -147,7 +186,9 @@ export class Memory {
         current.deleted_fingerprints.includes(candidate.memory_id.replace(/^memory_/u, ''))
       )
         return current;
-      const existing = current.memories.find((memory) => memoryFingerprint(memory) === hash);
+      const existing = current.memories.find(
+        (memory) => memory.memory_id === candidate.memory_id || memoryFingerprint(memory) === hash,
+      );
       if (existing) {
         returned = existing;
         return current;
@@ -180,13 +221,14 @@ export class Memory {
     scope: MemoryScope,
     sourceId: string,
     conversationId: string,
+    branchId?: string,
   ): Promise<CharacterMemory[]> {
     const identity = ScopeSchema.parse(scope);
     const asset = this.domain.table('sources').get(sourceKey(identity, sourceId));
     if (!asset || !sameScope(asset, identity))
       throw new ImportError('source-not-found', 'Source is not available');
     const proposed: CharacterMemory[] = [];
-    for (const message of activeMessages(asset, conversationId)) {
+    for (const message of activeMessages(asset, conversationId, branchId)) {
       if (message.status !== 'FINISHED' && message.status !== 'IMPORTED') continue;
       for (const sentence of message.text
         .split(/(?<=[。！？.!?])\s*|\n+/u)
@@ -371,7 +413,7 @@ export class Memory {
   }
 
   async drain(): Promise<void> {
-    await Promise.all(this.queues.values());
+    await drainMemoryPartitions(this.domain);
   }
 
   private require(partition: MemoryPartition, id: string, version: number): CharacterMemory {
@@ -390,27 +432,6 @@ export class Memory {
     scope: MemoryScope,
     transform: (current: MemoryPartition) => MemoryPartition,
   ): Promise<void> {
-    const key = scopeKey(scope);
-    const run = (this.queues.get(key) ?? Promise.resolve()).then(async () => {
-      const table = this.domain.table('memories');
-      if (!table.get(key)) await table.put(key, emptyPartition(scope));
-      await table.update(key, (current) => {
-        if (!sameScope(current, scope))
-          throw new ImportError(
-            'scope-mismatch',
-            'Stored memory partition does not match its identity',
-          );
-        return transform(current);
-      });
-    });
-    const tail = run.then(
-      () => {},
-      () => {},
-    );
-    this.queues.set(key, tail);
-    void tail.then(() => {
-      if (this.queues.get(key) === tail) this.queues.delete(key);
-    });
-    return run;
+    return updateMemoryPartition(this.domain, scope, transform).then(() => {});
   }
 }

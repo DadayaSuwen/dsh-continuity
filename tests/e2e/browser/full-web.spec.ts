@@ -53,13 +53,11 @@ test('installed bundle styles and upload are usable in full official mobile Web'
   ).toBe('14px');
   await page.getByLabel('角色名称', { exact: true }).fill('lin');
   await page.getByLabel('故事名称', { exact: true }).fill('harbor');
-  await page
-    .getByLabel('选择聊天文件', { exact: true })
-    .setInputFiles({
-      name: 'deepseek_data.zip',
-      mimeType: 'application/zip',
-      buffer: Buffer.from(companionZip()),
-    });
+  await page.getByLabel('选择聊天文件', { exact: true }).setInputFiles({
+    name: 'deepseek_data.zip',
+    mimeType: 'application/zip',
+    buffer: Buffer.from(companionZip()),
+  });
   await expect(page.getByRole('heading', { name: '解析报告' })).toBeVisible();
   await page.getByRole('button', { name: '保存原始记录并迁移' }).click();
   await expect(page.getByText(/迁移完成：新增/)).toBeVisible();
@@ -74,10 +72,13 @@ test('installed bundle styles and upload are usable in full official mobile Web'
   await expect(page.getByText('新对话已恢复已确认记忆。')).toBeVisible();
   await page.getByLabel('对角色说', { exact: true }).fill('继续寻找船长');
   await page.getByRole('button', { name: '继续对话', exact: true }).click();
-  await expect(page.getByText('小禾，我记得灯塔和我们的约定。', { exact: true })).toBeVisible();
+  await expect(dialog.getByText('小禾，我记得灯塔和我们的约定。', { exact: true })).toBeVisible();
   const downloading = page.waitForEvent('download');
   await page.getByRole('button', { name: '下载完整角色备份' }).click();
   expect((await downloading).suggestedFilename()).toBe('dsh-continuity-backup.json');
-  await page.screenshot({ path: 'test-results/full-official-mobile-390x844.png', fullPage: true });
+  await page.screenshot({
+    path: `test-results/full-official-mobile-${page.viewportSize()!.width}x${page.viewportSize()!.height}.png`,
+    fullPage: true,
+  });
   expect(errors).toEqual([]);
 });

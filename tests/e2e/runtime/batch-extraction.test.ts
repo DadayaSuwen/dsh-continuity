@@ -48,6 +48,6 @@ it('captures new Session history through official Session Query in review-only b
   await service.extractSession(companionScope, agent.id);
   expect(service.memory.list(companionScope)).toHaveLength(count);
   const archive = service.migration.listSources(companionScope)[0]!;
-  expect(archive.preview.format).toBe('generic-json');
+  expect(archive.preview.format).toBe('dsh-session-capture');
   expect(Buffer.from(archive.raw_base64, 'base64').length).toBeGreaterThan(0);
 });

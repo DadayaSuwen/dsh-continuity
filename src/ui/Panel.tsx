@@ -24,6 +24,7 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
   const [workspace, setWorkspace] = useState('');
   const [preview, setPreview] = useState<{ upload_id: string; preview: ImportPreview }>();
   const [selected, setSelected] = useState<string[]>([]);
+  const [branches, setBranches] = useState<Record<string, string>>({});
   const [data, setData] = useState<CharacterData>();
   const [busy, setBusy] = useState('');
   const [progress, setProgress] = useState(0);
@@ -38,6 +39,12 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
   const controller = useRef<AbortController>();
   const [editing, setEditing] = useState<{ id: string; text: string }>();
   const load = async () => setData(await api<CharacterData>(`/data?${query(scope)}`));
+  useEffect(() => {
+    setData(undefined);
+    setSession('');
+    setReplies([]);
+    setEditing(undefined);
+  }, [scope.agent_id, scope.character_id, scope.story_id]);
   const run = async (label: string, operation: () => Promise<void>) => {
     setBusy(label);
     setError('');
@@ -96,6 +103,7 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
         controller.current.signal,
       );
       setPreview(value);
+      setBranches({});
       setSelected(
         value.preview.conversations
           .filter((conversation) => conversation.supported)
@@ -117,6 +125,7 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
         upload_id: preview.upload_id,
         selected,
         workspace_id: workspace,
+        branches: Object.fromEntries(Object.entries(branches).filter(([, branch]) => branch)),
       });
       if (result.failures.length)
         setError(result.failures.map((failure) => failure.error).join('\n'));
@@ -126,6 +135,7 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
           action: 'extract',
           source_id: result.source_id,
           conversation_id: id,
+          ...(branches[id] ? { branch_id: branches[id] } : {}),
         });
       await load();
       setPreview(undefined);
@@ -319,6 +329,26 @@ export function ContinuityPanel({ onClose }: Props): ReactNode {
                     {item.title ?? '未知标题'} · {item.message_count} 条 · {item.branches.length}{' '}
                     个分支
                   </label>
+                  {item.branches.length > 1 && (
+                    <label>
+                      导入分支
+                      <select
+                        aria-label={`导入分支 ${item.id}`}
+                        value={branches[item.id] ?? ''}
+                        disabled={!!busy || !selected.includes(item.id)}
+                        onChange={(event) =>
+                          setBranches({ ...branches, [item.id]: event.target.value })
+                        }
+                      >
+                        <option value="">官方默认（{item.active_branch ?? '未知'}）</option>
+                        {item.branches.map((branch) => (
+                          <option key={branch} value={branch}>
+                            分支 {branch}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
                   {item.warnings.map((warning, index) => (
                     <p className="continuity-warning" key={index}>
                       {warning}

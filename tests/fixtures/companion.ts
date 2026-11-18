@@ -66,13 +66,16 @@ export function companionZip(): Uint8Array {
       },
     ],
   };
-  return zipSync({
-    'manifest.json': strToU8('{"export_format_version":3}'),
-    'chat_session_index.json': strToU8(
-      JSON.stringify([
-        { id: 'c1', inserted_at: conversation.inserted_at, updated_at: '2026-01-02T10:00:01Z' },
-      ]),
-    ),
-    'chat_sessions/c1.json': strToU8(JSON.stringify(conversation)),
-  });
+  return zipSync(
+    {
+      'manifest.json': strToU8('{"export_format_version":3}'),
+      'chat_session_index.json': strToU8(
+        JSON.stringify([
+          { id: 'c1', inserted_at: conversation.inserted_at, updated_at: '2026-01-02T10:00:01Z' },
+        ]),
+      ),
+      'chat_sessions/c1.json': strToU8(JSON.stringify(conversation)),
+    },
+    { mtime: new Date(2026, 0, 1, 0, 0, 0) },
+  );
 }

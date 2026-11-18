@@ -35,7 +35,7 @@ Fallbacks: labelled TXT/Markdown, generic JSON or pasted `User:`/`Assistant:` di
 
 Source audit baseline: [`master` SHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760), version **0.2.2-rc.4**. Some same-version npm entry sources differ from this Git checkout; published-runtime tests and exact-SHA source-runtime tests are separate.
 
-Real Cordis, native Storage, JSONL persistence, Workspace/Connection and production AgentLoop have been executed. Mobile 390×844 native-slot journeys pass using a real authenticated DSH Host; full official Web acceptance is being finalized. Synthetic/scripted tests prove wiring and deterministic retrieval, not live-model personality quality. See [runtime evidence](docs/engineering/RUNTIME_EVIDENCE.md), [compatibility metadata](COMPATIBILITY.json) and [progress](docs/engineering/PROGRESS.md) for current evidence.
+Real Cordis, native Storage, JSONL persistence, Session Query, Workspace/Connection, production AgentLoop and official compaction have been executed: **60/60** on published npm and **60/60** on the exact audited source SHA. The **8/8** phone checks cover 390×844 and 360×800, both the complete official CLI Web profile and the smaller native-slot Host fixture. Synthetic/scripted tests prove wiring and deterministic retrieval, not real Android/iOS or live-model personality quality. See [runtime evidence](docs/engineering/RUNTIME_EVIDENCE.md), [compatibility metadata](COMPATIBILITY.json) and [progress](docs/engineering/PROGRESS.md).
 
 DSH remains Developer Preview. Daily upstream checks alert on changes; untested upstream interfaces do not silently replace the stable pin.
 
@@ -50,8 +50,8 @@ Source deletion, memory deletion and formal DSH Session/attachment deletion are 
 ## Limitations
 
 - DeepSeek export format **v3** only. App export menus vary by version/system/region; no universal menu path is claimed.
-- Complete original ZIP is retained; official Session conversion follows one selected message chain. Other branches and excluded/unsupported records are reported, not invented. Alternate-leaf recovery is Experimental.
-- Rules extract conservative candidates, not arbitrary novel-quality semantic knowledge. User review remains required; live-model extraction/evaluation is Planned and opt-in.
+- Complete original ZIP is retained; official Session conversion and rule extraction follow the same selected leaf. Other branches and excluded/unsupported records remain in the original asset and report.
+- Rules extract conservative candidates, not arbitrary novel-quality semantic knowledge. `batchEveryTurns=0` disables live Session capture by default; opt-in capture still creates review-only candidates with no model extraction call.
 - Recovery uses official logged context snapshots. It never rewrites original imported events or promises invisible injection.
 - Current identities use explicit keys; multi-user sharing and display-name rename mapping are Planned.
 - Package v1 preserves sources/memories; full Session/attachment package recovery and large streaming backups are Planned.

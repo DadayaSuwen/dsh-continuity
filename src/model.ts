@@ -52,7 +52,7 @@ export type SourceConversation = z.infer<typeof ConversationSchema>;
 export const PreviewSchema = z.object({
   source_id: z.string().regex(/^source:[a-f0-9]{64}$/),
   filename: z.string().max(512),
-  format: z.enum(['deepseek-v3', 'text', 'markdown', 'generic-json']),
+  format: z.enum(['deepseek-v3', 'text', 'markdown', 'generic-json', 'dsh-session-capture']),
   byte_count: z.number().int().nonnegative(),
   conversation_count: z.number().int().nonnegative(),
   message_count: z.number().int().nonnegative(),
@@ -121,6 +121,7 @@ export type SessionBinding = z.infer<typeof BindingSchema>;
 export const LedgerSchema = ScopeSchema.extend({
   ledger_id: id,
   source_id: z.string(),
+  source_alias_ids: z.array(z.string()).max(1000).default([]),
   conversation_id: z.string(),
   branch_id: z.string().nullable(),
   session_id: id.nullable(),

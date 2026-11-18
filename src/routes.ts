@@ -82,6 +82,7 @@ const ActionSchema = z.discriminatedUnion('action', [
     action: z.literal('extract'),
     source_id: z.string(),
     conversation_id: z.string(),
+    branch_id: z.string().optional(),
   }),
   IdentityRequest.extend({ action: z.literal('propose'), proposal: ProposalSchema }),
   IdentityRequest.extend({
@@ -296,7 +297,12 @@ export function registerRoutes(ctx: Context, service: Continuity, lifetime: Abor
         break;
       }
       case 'extract':
-        value = await service.memory.extract(scope, action.source_id, action.conversation_id);
+        value = await service.memory.extract(
+          scope,
+          action.source_id,
+          action.conversation_id,
+          action.branch_id,
+        );
         break;
       case 'propose':
         value = await service.memory.propose(scope, action.proposal);
@@ -348,6 +354,7 @@ export function registerRoutes(ctx: Context, service: Continuity, lifetime: Abor
           provider: action.provider,
           model: action.model,
         });
+        const firstNewEvent = agent.session.snapshotEvents().length;
         agent.followup(
           createUserMessage({
             content: [{ type: 'text', text: action.text }],
@@ -355,7 +362,7 @@ export function registerRoutes(ctx: Context, service: Continuity, lifetime: Abor
           }),
         );
         await agent.whenIdle();
-        const events = agent.session.snapshotEvents();
+        const events = agent.session.snapshotEvents().slice(firstNewEvent);
         const failure = events.findLast(
           (event) => event.type === 'turn/end' && event.data.reason.kind === 'error',
         );

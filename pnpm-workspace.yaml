@@ -1,5 +1,6 @@
 overrides:
   undici: 8.12.2
+  fflate: 0.8.3
 allowBuilds:
   esbuild: true
   koffi: true

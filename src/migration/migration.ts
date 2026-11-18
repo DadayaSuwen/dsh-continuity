@@ -18,7 +18,7 @@ import {
 import { ImportError, inspectZip } from '../security/archive.ts';
 import type { ArchiveLimits } from '../security/archive.ts';
 import { parseDataJson } from '../security/json.ts';
-import { ScopeSchema, SourceSchema } from '../model.ts';
+import { ScopeSchema, SourceSchema, LedgerSchema } from '../model.ts';
 import type { ImportLedger, MemoryScope, SourceAsset, SourceConversation } from '../model.ts';
 import type { ContinuityDomain } from '../storage.ts';
 import { sourceKey } from '../storage.ts';
@@ -157,6 +157,14 @@ export class Migration {
       if (prior?.session_id) {
         const recovered = await this.reconcile(prior, workspace, signal);
         if (recovered) {
+          await receipts.update(ledgerId, (current) =>
+            LedgerSchema.parse({
+              ...current,
+              source_alias_ids: [
+                ...new Set([...(current.source_alias_ids ?? []), source.source_id]),
+              ],
+            }),
+          );
           result.duplicates.push({
             conversation_id: conversation.id,
             session_id: prior.session_id,
@@ -169,6 +177,7 @@ export class Migration {
         ...scope,
         ledger_id: ledgerId,
         source_id: source.source_id,
+        source_alias_ids: [],
         conversation_id: conversation.id,
         branch_id: branchId,
         session_id: null,

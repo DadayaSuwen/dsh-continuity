@@ -11,6 +11,14 @@
 - High/critical current-head human review rules, protected-environment release preparation and executable branch-protection recommendations.
 - Bilingual engineering documentation and contribution/security/community/license notices.
 
+### Fixed / 修复
+
+- Restore rederives preview from original bytes and validates original-speaker/evidence classification; intentionally omitted sources downgrade to unknown review candidates.
+- First-bind concurrency, edited-memory re-extraction uniqueness/tombstones, overflow-before-persistence and successful retries after historical failed turns.
+- Explicit alternate-leaf commit/extraction, imported Session-use receipt aliases, live/resumed official model.select, context refresh after real compaction.
+- Full official Web stylesheet/Portal integration and asynchronous Workspace initialization; two phone viewports pass their independent full-Host journeys.
+- Verified fflate0.8.3 ZIP64 parser advisory fix; project-only undici8.12.2 override. Production audit0advisories; unresolved devpicomatch high remains a publication gate.
+
 ### Compatibility / 兼容
 
 - Published npm baseline0.2.2-rc.4，audited GitSHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`，Node24.22.3，pnpm11.28.5。

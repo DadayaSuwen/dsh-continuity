@@ -8,6 +8,7 @@ export interface RecoveryOptions {
   tokenBudget: number;
   query?: string;
   sessionId?: string;
+  sessionSources?: readonly { source_id: string; conversation_id: string }[];
   now?: number;
 }
 export interface RecoveryContext {
@@ -42,7 +43,13 @@ export function buildRecovery(
         memory.source_kind !== 'unknown' &&
         (memory.validity.from === null || memory.validity.from <= now) &&
         (memory.validity.until === null || memory.validity.until > now) &&
-        (memory.scope !== 'session' || options.sessionId === memory.source_session_id) &&
+        (memory.scope !== 'session' ||
+          options.sessionId === memory.source_session_id ||
+          options.sessionSources?.some(
+            (source) =>
+              source.source_id === memory.source_id &&
+              source.conversation_id === memory.source_session_id,
+          )) &&
         (memory.scope !== 'story' || memory.story_id !== null),
     );
   const byFact = new Map<string, CharacterMemory[]>();

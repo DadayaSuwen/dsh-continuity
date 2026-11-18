@@ -1,6 +1,13 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import {
+  Session,
+  SessionId,
+  snapshotSessionEvent,
+  SESSION_FORMAT_VERSION,
+} from '@deepseek-ai/dsh-session';
+import type { SessionEvent } from '@deepseek-ai/dsh-session';
+import {
   exportManifest,
   exportSessionFile,
   exportSessionIndex,
@@ -211,6 +218,79 @@ function emergencyConversation(
   };
 }
 
+const CaptureSchema = z
+  .object({
+    schema_version: z.literal(1),
+    dsh_session: z
+      .object({
+        id: z.string().min(1),
+        version: z.literal(SESSION_FORMAT_VERSION),
+        createdAt: z.number().int().nonnegative(),
+        isSeeded: z.boolean(),
+      })
+      .passthrough(),
+    events: z.array(
+      z
+        .object({
+          type: z.string(),
+          seq: z.number().int().nonnegative(),
+          time: z.number().int().nonnegative(),
+          data: z.unknown(),
+        })
+        .passthrough(),
+    ),
+  })
+  .strict();
+
+function capturedConversation(bytes: Uint8Array): SourceConversation {
+  const capture = CaptureSchema.parse(parseDataJson(bytes));
+  const header = { ...capture.dsh_session, id: SessionId(capture.dsh_session.id) };
+  Session.create(header.id, undefined, header);
+  const messages: SourceMessage[] = [];
+  for (const raw of capture.events) {
+    const event = snapshotSessionEvent(raw as SessionEvent);
+    const message =
+      event.type === 'user/message' && event.data.source.kind === 'user'
+        ? event.data
+        : event.type === 'assistant/message'
+          ? event.data.message
+          : undefined;
+    if (!message) continue;
+    const text = message.content
+      .map((block) => (block.type === 'text' ? block.text : ''))
+      .join('\n');
+    if (!text) continue;
+    messages.push({
+      id: message.id,
+      role: message.role === 'user' ? 'user' : 'assistant',
+      text,
+      timestamp: event.time,
+      status: 'IMPORTED',
+      parent_id: messages.at(-1)?.id ?? null,
+    });
+  }
+  if (!messages.length)
+    throw new ImportError(
+      'no-messages',
+      'Session capture contains no user-authored or assistant text',
+    );
+  return {
+    id: capture.dsh_session.id,
+    title: null,
+    digest: digest(bytes),
+    message_count: messages.length,
+    attachment_count: 0,
+    branches: [messages.at(-1)!.id],
+    active_branch: messages.at(-1)!.id,
+    messages,
+    warnings: [
+      'Exact official Session event snapshot; non-text content is preserved in raw events',
+      'Reimport creates a labelled text-only Session; the original events remain in this source asset',
+    ],
+    supported: true,
+  };
+}
+
 /** Format adapters only: official DeepSeek conversion is upstream-owned; other formats remain small and explicit. */
 export async function previewImport(
   bytes: Uint8Array,
@@ -286,7 +366,10 @@ export async function previewImport(
       : /\.(?:md|markdown)$/iu.test(filename)
         ? 'markdown'
         : 'text';
-    conversations = [emergencyConversation(bytes, format)];
+    if (format === 'generic-json' && Object.hasOwn(parseDataJson(bytes) as object, 'dsh_session')) {
+      format = 'dsh-session-capture';
+      conversations = [capturedConversation(bytes)];
+    } else conversations = [emergencyConversation(bytes, format)];
   }
   return PreviewSchema.parse({
     source_id: sourceId,

@@ -35,7 +35,7 @@ A project with no tracked files fails the default secret scan deliberately. Expl
 - **npm runtime**: installed official modules, plugin lifecycle, production AgentLoop; only external model IO scripted, no paid model calls.
 - **Pinned source**: `pnpm test:pinned`, [Lead runner](../../scripts/test-pinned.mjs) and real official source Vite aliases. This is not npm runtime relabeled.
 - **Packed Loader**: `node scripts/packed-smoke.mjs` performs explicit fresh `pnpm build` followed by real `pnpm pack`, installs official runtime dependencies/peers and actual client Host externals in a separate OS temporary consumer, imports host/client exports through native Node and creates an actual official Loader entry/Fiber. Tokens/source aliases are removed, no mocks. Missing host services leave the Fiber pending; creation is not a full activation claim. Functional paths are verified by `test:runtime`.
-- **Mobile browser**: install Chromium then `pnpm test:mobile`; real DSH Web flow at 390×844 and any other viewports actually declared by tests. Trace/screenshot/JUnit are evidence; an unrun browser test is not UI acceptance.
+- **Mobile browser**: install standard Playwright Chromium then `pnpm test:mobile`. The runner rebuilds the bundle and launches an isolated authenticated Slot Host plus a complete official CLI Web profile, using ephemeral ports and a project-local Documents override; child Hosts stop afterward. Eight checks at 390×844 and 360×800 currently pass. The explicit local browser-path environment fallback is not a CI dependency, and viewport tests are not real Android/iOS or live-model quality evidence.
 
 `pnpm test:coverage` uses V8 with text/lcov/json-summary reports. No invented 100% coverage or empty evaluation directory passes. `test:evaluation` is claimed only once real evaluation tests exist.
 
@@ -51,6 +51,10 @@ node scripts/upstream-compatibility.mjs
 ```
 
 Audited `ca33fd6843b205e279c7ccb6cb73a472c78f5760` differs from multiple same-version npm source files. Installed version equality does **not** prove that SHA works. Pinned/latest reports must retain actual SHA, exit code and runner identity.
+
+## Current executed record
+
+Node24.22.3: published npm and exact audited SHA each60/60 across28files; eight browser checks across two phone viewports. This is not overall MVP acceptance; real App exports and model quality remain separate. See [runtime evidence](RUNTIME_EVIDENCE.md) and [compatibility](COMPATIBILITY.md). Playwright failure attachments use ignored `.runtime/browser-results` instead of clearing unrelated test-results; redact log tokens and never upload production data as CI artifacts.
 
 ## Stdlib check scope
 
