@@ -4,7 +4,7 @@
 
 ## Evidence and changes
 
-Inspected [manifest](../../package.json), [lock](../../pnpm-lock.yaml), installed first-party source, retained audit and production evidence. Historical full-development audit records **1 high / 3 moderate**; historical production audit records zero. These are not new audit results. During research, Lead independently changed Vitest/coverage and lock-resolved mocker to **4.1.12**; no post-change test/audit result is claimed here. Research used public GitHub advisory/release/source APIs and npm registry; no delegation or dependency changes by this researcher.
+Inspected the [manifest](../../package.json), source-checkout `pnpm-lock.yaml`, installed first-party source, retained audit and production evidence. Historical full-development audit records **1 high / 3 moderate**; historical production audit records zero. These are not new audit results. During research, Lead independently changed Vitest/coverage and lock-resolved mocker to **4.1.12**; no post-change test/audit result is claimed here. Research used public GitHub advisory/release/source APIs and npm registry; no delegation or dependency changes by this researcher.
 
 ## Exact findings
 

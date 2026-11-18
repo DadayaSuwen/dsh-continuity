@@ -44,6 +44,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Installed runtime dependency and peer license closure
         run: pnpm check:licenses
+      - name: Published MCP redirects and stdio on synthetic loopback fixtures
+        run: pnpm test:mcp
       - name: Dependency vulnerabilities (network registry; fail on high)
         run: pnpm audit --audit-level high
       - name: Untrusted upload and import regressions

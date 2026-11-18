@@ -32,10 +32,10 @@
 
 每日[`dsh-compatibility`工作流](../../.github/workflows/dsh-compatibility.yml)读取官方master，记录full SHA后使用同一个真实source runner；失败保留trace并由独立job通知维护者，未执行的云端任务不声称已有通知。稳定pin和npm依赖不自动变更。
 
-2026-11-19latest实测：2e39e704 /source0.2.2-rc.5，60/60 across28files；公开latest脚本freshclone与真实source-runnerexit0、stablePinUnchanged=true。此前网络失败与packages/vendor漏native引用导致22suite加载失败已保留trace，并补齐native/system后通过。稳定pin依旧ca33fd /npmrc.4；rc.5发布包与完整browser消费仍未测。详见[中文补充](UPSTREAM_LATEST.md) / [English](UPSTREAM_LATEST.en.md)。
+2026-11-19latest实测：2e39e704源码60/60，公开probeexit0、stablePinUnchanged=true。已发布rc.5consumer也60/60，修正其exactengine后phone8/8并重复8/8。初次6/8失败来自CLIadmission，修正无需allow-version或插件源码变化。现installer仍exactrc.4，**sourcevariant通过不变成原包rc5兼容声明**。[源码补充](UPSTREAM_LATEST.md) /[English](UPSTREAM_LATEST.en.md) · [发布包跟进](PUBLISHED_RC5_FOLLOWUP.md) /[English](PUBLISHED_RC5_FOLLOWUP.en.md)。
 
 ## Release blockers
 
-生产audit0公告；完整开发Host在undici8.12.2与Vitest4.1.12后当前1high/1moderate。Picomatch4.0.7公告已withdrawn但registry仍报high且无发布修复；MCPclient2.2.0待兼容验证升级。原high门禁exit1，不降低阈值、不ignore。不做公开Release/npm发布，真实云人类审批与仓库保护未配置。
+本轮production/完整开发audit0公告，原high门禁exit0；未降低阈值或ignore。项目SDK2.3.0override经[真实MCPprobe](MCP_TRANSPORT.md)5项验证；picomatch4.0.7因撤回公告被feed移除，没有codefix。此override不通过插件安装传播到用户Host，OAuth/TLS仍未验收。不做公开Release/npm发布，真实人类审批与仓库保护未配置。
 
 实际App ZIP、真实模型质量、真实移动系统、大包压力、跨进程writer、完整Session/附件包均见[未决事项](KNOWN_ISSUES.md)。兼容通过是本地工程组合，不等于整体产品验收。

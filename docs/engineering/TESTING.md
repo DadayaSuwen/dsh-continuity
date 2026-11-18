@@ -34,8 +34,10 @@ node "$PNPM_SCRIPT" check:compatibility
 - **集成**：官方 Cordis + StorageJson/Domain/JSONL，真正 temp filesystem与保存/加载，不替代 Session数据库。
 - **npm runtime**：已安装 npm官方模块、插件 lifecycle与真实 production AgentLoop；仅外部模型 IO scripted，不访问付费模型。
 - **pinned source**：`pnpm test:pinned` 通过 [Lead runner](../../scripts/test-pinned.mjs) 与真实官方源码 Vite alias，不是 npm runtime 换一个标题。
-- **packed Loader**：`node scripts/packed-smoke.mjs` 运行显式 fresh `pnpm build` → actual `pnpm pack` →独立 OS temp consumer安装官方 runtime dependencies/peers及客户端Host外部依赖→原生 Node host/client import→真正官方 Loader import/entry/Fiber创建。Consumer从环境移除 token/source aliases，不Mock；required host services缺席时 Fiber pending 不等于 activation，完整功能路径由 `test:runtime` 验证。
+- **packed Loader**：`node scripts/packed-smoke.mjs` freshbuild→actualpack→独立consumer官方peer→原生host/client与Loader/Fiber，同时检查随包所有Markdown本地目标。CODE_OF_CONDUCT随包，pnpm锁只在源码checkout/独立sourceZIP，不把私有试验homes打包来满足链接。Consumer清除token/sourcealiases；缺requiredHostservices时Fiberpending不等于activation，功能路径由test:runtime验证。
 - **手机浏览器**：`pnpm exec playwright install --with-deps chromium` 后 `pnpm test:mobile`；runner先build，再启动隔离认证Host与完整官方CLI Web，使用ephemeralports和projectDocuments，结束关闭子进程。390×844、360×800八项当前通过，UI如实归属和scope；本机Chrome路径只用显式环境变量，CI使用标准PlaywrightChromium。不是Android/iOS实机或live模型质量证明。
+
+- **MCP传输**：`pnpm test:mcp`通过[已发布公共probe](../../scripts/check-mcp-transport.mjs)、真实nestedSDK、loopback307/302目标观察和Nodestdio；5checks不计为新增Vitestcases，OAuth/TLS/真实Host未测。[范围](MCP_TRANSPORT.md)。
 
 `pnpm test:coverage` 独立产生 cobertura相关证据，当前配置使用V8/text/lcov/json-summary；不虚构100%覆盖、不让空目录test/evaluation通过来冒充测试。`pnpm test:evaluation`只在真实测试已实现时声明成功。
 

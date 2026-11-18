@@ -132,9 +132,9 @@ try {
   writeFileSync(
     join(consumer, 'smoke.mjs'),
     `import assert from 'node:assert/strict';
-import { readFileSync, existsSync, realpathSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync, existsSync, realpathSync, readdirSync } from 'node:fs';
+import { dirname, resolve, relative, isAbsolute } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Context } from '@deepseek-ai/cordis';
 import Loader from '@deepseek-ai/cordis-plugin-loader';
 import * as plugin from '${manifest.name}';
@@ -153,6 +153,27 @@ for (const file of ['dist/index.js', 'dist/index.d.ts', 'dist/client.js', 'dist/
 const client = await import('${manifest.name}/client');
 assert.equal(typeof client.apply, 'function');
 const packageRoot = dirname(fileURLToPath(import.meta.resolve('${manifest.name}/package.json')));
+const { localLinks } = await import(pathToFileURL(resolve(packageRoot, 'scripts/check-docs.mjs')).href);
+const markdown = [];
+function collectMarkdown(directory) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name === 'dist') continue;
+    const file = resolve(directory, entry.name);
+    if (entry.isDirectory()) collectMarkdown(file);
+    else if (entry.isFile() && entry.name.endsWith('.md')) markdown.push(file);
+  }
+}
+collectMarkdown(packageRoot);
+let packedLocalLinks = 0;
+for (const file of markdown) for (const link of localLinks(readFileSync(file, 'utf8'))) {
+  if (/^[a-z][a-z0-9+.-]*:/i.test(link) || link.startsWith('//')) continue;
+  const path = link.split('#', 1)[0];
+  if (!path) continue;
+  const target = resolve(dirname(file), decodeURIComponent(path));
+  const local = relative(packageRoot, target);
+  assert.ok(!local.startsWith('..') && !isAbsolute(local) && existsSync(target), 'missing offline packed link in ' + relative(packageRoot, file) + ': ' + link);
+  packedLocalLinks++;
+}
 function exportFiles(value) { return typeof value === 'string' ? [value] : Object.values(value).flatMap(exportFiles); }
 for (const target of exportFiles(packed.exports)) assert.ok(existsSync(resolve(packageRoot, target)), 'missing declared packed export: ' + target);
 const ctx = new Context();
@@ -165,7 +186,7 @@ try {
   assert.equal(entry.options.name, '${manifest.name}');
   assert.ok(entry.moduleNamespace && entry.fiber, 'official Loader entry failed to import or create a real Fiber');
   assert.equal(entry.moduleNamespace.apply, plugin.apply);
-  console.log(JSON.stringify({ result: 'passed', resolved, packedVersion: packed.version, clientApply: typeof client.apply, loader: '${loader.version}', entryId: id, fiberState: entry.fiber.state, inject: plugin.inject, scope: 'actual Loader import + entry/Fiber creation; required host services deliberately absent; full activation/agent path is test:runtime' }));
+  console.log(JSON.stringify({ result: 'passed', resolved, packedVersion: packed.version, packedMarkdown: markdown.length, packedLocalLinks, clientApply: typeof client.apply, loader: '${loader.version}', entryId: id, fiberState: entry.fiber.state, inject: plugin.inject, scope: 'actual Loader import + entry/Fiber creation; required host services deliberately absent; full activation/agent path is test:runtime' }));
 } finally { await ctx.fiber.dispose(); }
 `,
   );

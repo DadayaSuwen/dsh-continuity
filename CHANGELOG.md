@@ -17,10 +17,11 @@
 - First-bind concurrency, edited-memory re-extraction uniqueness/tombstones, overflow-before-persistence and successful retries after historical failed turns.
 - Explicit alternate-leaf commit/extraction, imported Session-use receipt aliases, live/resumed official model.select, context refresh after real compaction.
 - Full official Web stylesheet/Portal integration and asynchronous Workspace initialization; two phone viewports pass their independent full-Host journeys.
-- Verified fflate0.8.3 ZIP64 parser advisory fix; project-only undici8.12.2 override. Production audit0advisories; unresolved devpicomatch high remains a publication gate.
+- Verified fflate0.8.3 ZIP64 parser fix; project-only undici8.12.2 andMCPclient2.3.0overrides. Current production/developmentaudit0;picomatchwithdrawn-feed removal is not a codefix. Public release remains unperformed.
 
-- Matched Vitest/coverage4.1.12 patch removes two mocker moderate advisories; remaining audit1high/1moderate keeps high gate failing without ignores.
-- Latest official source2e39e704(rc.5) actually passes60/60; sparse probe now includes native/system tsconfig references. Stable peer/SHA contract remainsrc.4/ca33fd;rc.5npm/browser consumption is not claimed.
+- Matched Vitest/coverage4.1.12 removes two mocker advisories. MCP2.2.0→2.3.0realpublicprobe regression blocks cross-originfixtureheaders/bodies while direct/same-originHTTP/stdio pass; unchanged high gate now passes. Existing userHostSDKs are not automatically changed.
+- Latest official source2e39e704(rc.5) passes60/60; sparse probe includes native/system. Independent exact-rc.5consumer runtime60/60/fullphone8/8(repeat8)passes aftercorrectengine metadata;theoriginalinstallercontractremainsrc.4/ca33fd.
+- Offline packed documentation now verifies every local target in the actual installed tarball. Code-of-conduct is included; lockfile belongs to separate source ZIP; private evidence paths are explicit local-only records, not missing download links.
 - Generated delivery documents are excluded from source-doc checks, with a public quality self-test red→green regression.
 
 ### Compatibility / 兼容

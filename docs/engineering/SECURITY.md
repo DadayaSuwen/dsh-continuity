@@ -24,6 +24,8 @@ CI默认read token；untrusted PR不拿发布凭证、不用特权PR触发执行
 
 [License check](../../scripts/check-licenses.mjs) 读取真实installed runtime闭包及required peers，未知SPDX/缺失依赖失败；[NOTICE](../../NOTICE)保留DeepSeek/Cordis/相关bundled MIT来源。[Security workflow](../../.github/workflows/security.yml) 额外audit/dependency review/CodeQL只在实际Actions或联网run产生结果，不推定已跑。
 
+项目MCP SDK2.3.0override只用于本仓dev/CI图；[公共传输回归](MCP_TRANSPORT.md)在真实官方probeServer验证跨源307/302不发header/body、同源与stdio仍通。安装Continuity不替换用户现有HostSDK；OAuth/TLS/代理/真实MCP服务仍未验收。当前生产/完整开发audit0、highgateexit0；picomatch因公告撤回不再被registry列出，而非发布了代码修复。
+
 ## 发布与人工权限
 
 高风险/critical至少两名非作者人类维护者在当前headReview；AI不批准、不合并。Release approval是GitHub protected environment的人工规则，不是模型判断或文件中的“approved”。环境保护由维护者确认后配置， [release workflow](../../.github/workflows/release.yml) 只做准备，零公开写入。分支保护与仓库设置未在本任务中改远端，见 [可执行建议](BRANCH_PROTECTION.md)。

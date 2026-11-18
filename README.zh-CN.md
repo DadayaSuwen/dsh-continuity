@@ -6,7 +6,7 @@
 
 ## 安装
 
-前提：Node **24.22.3**（支持规格 `>=24.9.0 <25`）、pnpm **11.28.5**、DSH **0.2.2-rc.4**。项目尚未公开发布；从源码构建并安装 tarball：
+前提：Node **24.22.3**（支持规格 `>=24.9.0 <25`）、pnpm **11.28.5**、DSH **0.2.2-rc.4**。项目尚未公开发布。下面构建命令在源码 checkout / 独立源码 ZIP（含锁文件）内执行，而不是在已构建安装包解压目录执行：
 
 ```sh
 pnpm install --frozen-lockfile
@@ -37,7 +37,7 @@ dsh web
 
 已实际执行真实 Cordis、原生 Storage、JSONL、Session Query、Workspace/Connection、生产 AgentLoop 与官方压缩：npm 运行版 **60/60**，固定官方 SHA 源码版 **60/60**。手机 **8/8** 覆盖390×844、360×800，分别运行完整官方 CLI Web profile 与小型 native Slot Host fixture。合成/脚本模型只证明接线和确定性召回，不冒充真实 Android/iOS 或模型人格质量。见[运行记录](docs/engineering/RUNTIME_EVIDENCE.md)、[兼容元数据](COMPATIBILITY.json)和[开发进度](docs/engineering/PROGRESS.md)。
 
-最新官方源码补充：**2e39e704 /source0.2.2-rc.5，60/60**，完整latestprobe实跑且stablepin不变。rc.5已发布npm与完整rc.5browser消费仍未测试。见[最新证据](docs/engineering/UPSTREAM_LATEST.md)。
+最新官方2e39e704/source0.2.2-rc.5源码60/60。独立exactrc.5consumer在engine元数据匹配后runtime60/60、完整phone8/8并重复8/8；**原rc.4安装包不会因此升级成rc.5兼容声明**。见[源码证据](docs/engineering/UPSTREAM_LATEST.md) · [已发布消费跟进](docs/engineering/PUBLISHED_RC5_FOLLOWUP.md)。
 
 DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护者，不自动替换稳定 pin。
 
@@ -57,7 +57,7 @@ DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护�
 - 恢复通过官方日志化 context snapshot；不改原始已提交事件，不承诺隐形注入。
 - 身份使用明确分区键；多用户共享、名称与 ID 分离改名体验为 Planned。
 - v1 保存来源/记忆；完整 Session/附件迁移包与大包流式恢复为 Planned。
-- 已记录生产依赖审计无 high/critical；全量 DSH CLI 开发依赖有待处理公告，单独追踪。公开发布尚未批准。
+- 本项目生产/开发audit当前0公告，依赖修复已有实测、撤回公告feed单独核实；这不更新用户现有HostSDK或证明所有缺陷消失。见[MCP范围](docs/engineering/MCP_TRANSPORT.md)。公开发布尚未批准。
 
 项目不规避 DeepSeek 限额，也不保证不同模型逐字相同行为。整体 MVP 验收还包括用户允许的真实官方导出样本和真实模型质量证据。
 

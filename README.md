@@ -6,7 +6,7 @@ A local-first, independent **DeepSeek Harness plugin bundle** for migrating your
 
 ## Installation
 
-Prerequisites: Node **24.22.3** (supported specification: `>=24.9.0 <25`), pnpm **11.28.5**, and DSH **0.2.2-rc.4**. The current project has not been publicly published; build and install its tarball:
+Prerequisites: Node **24.22.3** (supported specification: `>=24.9.0 <25`), pnpm **11.28.5**, and DSH **0.2.2-rc.4**. The project is not publicly published. Run these build commands from the source checkout/source ZIP, which includes the lockfile—not from the extracted prebuilt installer:
 
 ```sh
 pnpm install --frozen-lockfile
@@ -37,7 +37,7 @@ Source audit baseline: [`master` SHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`]
 
 Real Cordis, native Storage, JSONL persistence, Session Query, Workspace/Connection, production AgentLoop and official compaction have been executed: **60/60** on published npm and **60/60** on the exact audited source SHA. The **8/8** phone checks cover 390×844 and 360×800, both the complete official CLI Web profile and the smaller native-slot Host fixture. Synthetic/scripted tests prove wiring and deterministic retrieval, not real Android/iOS or live-model personality quality. See [runtime evidence](docs/engineering/RUNTIME_EVIDENCE.md), [compatibility metadata](COMPATIBILITY.json) and [progress](docs/engineering/PROGRESS.md).
 
-Latest official-source supplement: **2e39e704 / source0.2.2-rc.5,60/60** through the actual latest probe with stable pin unchanged. Published rc.5 npm and full rc.5 browser consumption remain untested. [Latest evidence](docs/engineering/UPSTREAM_LATEST.en.md)
+Latest official source2e39e704/source0.2.2-rc.5 passes60/60. A separate exact-rc.5sourceconsumer passes60/60 andfullphone8/8 twice after correctenginesmetadata;theoriginalrc.4installer is not promoted to rc.5compatibility. [Sourceevidence](docs/engineering/UPSTREAM_LATEST.en.md) · [Publishedconsumerfollow-up](docs/engineering/PUBLISHED_RC5_FOLLOWUP.en.md)
 
 DSH remains Developer Preview. Daily upstream checks alert on changes; untested upstream interfaces do not silently replace the stable pin.
 
@@ -57,7 +57,7 @@ Source deletion, memory deletion and formal DSH Session/attachment deletion are 
 - Recovery uses official logged context snapshots. It never rewrites original imported events or promises invisible injection.
 - Current identities use explicit keys; multi-user sharing and display-name rename mapping are Planned.
 - Package v1 preserves sources/memories; full Session/attachment package recovery and large streaming backups are Planned.
-- Runtime dependency audit has no high/critical finding in the production check at the recorded run; broad DSH CLI development dependencies have open advisories, tracked separately. Public release is not approved.
+- Current project production/development audits report zero advisories after tested dependency fixes and withdrawn-feed reconciliation; this does not update existing user Host SDKs or prove all defects absent. [MCP scope](docs/engineering/MCP_TRANSPORT.en.md). Public release is not approved.
 
 This extension does not bypass DeepSeek limits or guarantee identical model behavior across providers. Overall MVP acceptance remains open for a real user-approved official export and live-model quality evidence.
 

@@ -1,6 +1,6 @@
 # 开发进度 / Engineering progress
 
-## 2026-11-19 01:11 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
+## 2026-11-19 01:55 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
 
 项目是独立 **DSH Continuity bundle 插件**，不是浏览器扩展、另一套客户端或 Harness。代码在独立目录；官方源码保持只读和 clean。所有本地开发、提交与测试均未公开发布，当前运行中的 3080 GUI 未改动。
 
@@ -26,12 +26,14 @@
 | exact SHA 源码回归                         | **60/60，28 文件**                                    | 官方 + vendor 源码 aliases；不是只改版本标题                                                        |
 | latest2e39e704 源码回归                    | **60/60，28文件**                                     | 正式latestprobeexit0；原生源码引用补齐，stablePinUnchanged=true                                     |
 | 手机 E2E                                   | **8/8**                                               | 完整官方 CLI Web 与 root Slot fixture；390×844、360×800，两个隔离认证 Host 自动启动                 |
+| rc.5发布consumer实验                       | **60/60；phone8/8、重复8/8**                          | 只改consumer精确版本与engine；源代码不改，非原rc4installer兼容声明                                  |
 | 严格类型、ESLint、格式                     | **通过**                                              | 最终源码逐项实跑                                                                                    |
-| 密钥模式扫描                               | **149 文本，0 findings**（含最终新增文件）            | 合成fixture独立排除；最终stage后tracked扫描单列                                                     |
+| 密钥模式扫描                               | **最终源码tracked扫描通过，0findings**                | 合成fixture独立排除；实际文本统计见维护验证报告                                                     |
 | build → pack → 隔离 consumer → 原生 Loader | **通过**                                              | 57包consumer，最终构建字节与校验和保留                                                              |
 | npm/源码差异                               | 实际使用接口 **9 DIFF**；entry 比较 **31 包/16 DIFF** | 同版本号不代表源码同一                                                                              |
 | production audit                           | 0 high/critical，0 moderate                           | 与完整开发 Host 闭包分开                                                                            |
-| 开发闭包 audit                             | **1 high / 1 moderate**                               | Vitest4.1.12消除两项moderate；picomatchwithdrawn但audit仍报high，MCPclient待验证修复，gateexit1     |
+| 开发闭包 audit                             | **0公告，highgateexit0**                              | SDK2.3项目override实测修复；picomatchwithdrawnfeed更新不是codefix                                   |
+| MCP传输公共probe                           | **5/5**                                               | 真实loopback直接/同源HTTP、跨源307/302、stdio；非OAuth/真实Host修复声明                             |
 
 详细命令与边界：[运行证据](RUNTIME_EVIDENCE.md)、[测试指南](TESTING.md)、[已知问题](KNOWN_ISSUES.md)。
 
@@ -42,15 +44,15 @@
 ### 本地工程预览交付 / Local preview delivery
 
 1. 双语架构、用户、需求、工程文档与兼容元数据已同步；固定点双轴审查有逐项复现和修复记录。
-2. 最终类型/lint/格式、47 Markdown/572链接/8workflow合约、64许可证manifest、源码密钥模式扫描通过。npm与exactSHA各60/60、两个手机视口8/8；fflate0.8.3生产audit0公告。
+2. 类型/lint/格式、双语文档/8workflow合约、64许可证manifest与源码扫描实际通过；npm/stable/latest各60/60、rc4phone8/8、MCP5项、rc5独立consumer60及两轮8通过。最终统计随维护交付报告。
 3. freshbuild→pack→独立consumer57包→原生host/client/officialLoader已通过；最终安装包、源码ZIP、校验和及verification报告在生成交付目录。无远端发布。
 
-公开发布仍受开发picomatch high和用户确认阻挡。这里完成的是本地工程预览，而不是整体MVP或人类GitHub审批。
+公开发布仍待用户明确确认及真实远端人类审批；本项目原audit high门已实际exit0。这里完成的是本地工程预览，而不是整体MVP或人类GitHub审批。MCPoverride只在项目dev/CI安装图，用户HostSDK不自动改变。
 
 ### 尚未验收 / Not accepted
 
 - 用户明确允许使用的真实 DeepSeek App ZIP、真实 Android/iOS 文件选择/下载、跨模型自然语言人格与剧情质量。
-- 上游rc.5已发布npm消费与完整browser仍未验收；latest2e39e704官方源码60/60已通过。此前三次网络失败与22套件缺native目录的失败trace仍保留；stablepin未改。
+- 已发布rc.5消费sourcevariant已60/60与完整phone8/8（重复8/8）通过，原rc.4installer不因实验自动兼容rc.5。正式rc.5安装版本与模型/实机验收仍待维护决定；初次admission和wrapper失败记录保留。见[跟进](PUBLISHED_RC5_FOLLOWUP.md)。
 - 大文件 RSS/中断窗口全覆盖、跨进程写者、完整 Session/附件迁移、加密/签名/未来 schema 升级。
 - cloud Actions/CodeQL、人类远端 Review/branch/environment 配置、GitHub/npm Release；尚无公开仓库或 tag。
 

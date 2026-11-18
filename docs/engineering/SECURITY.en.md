@@ -24,6 +24,8 @@ CI tokens default to read. Untrusted PRs receive no publish credentials and use 
 
 [License check](../../scripts/check-licenses.mjs) reads actual installed runtime closure and required peers; missing dependencies/unknown SPDX fail. [NOTICE](../../NOTICE) retains DeepSeek/Cordis/bundled MIT attribution. [Security workflow](../../.github/workflows/security.yml) adds audit/dependency review/CodeQL, whose results exist only after actual execution.
 
+The project-only MCP SDK2.3.0override applies to dev/CI dependencies. [Public transport regression](MCP_TRANSPORT.en.md) verifies actual DSHprobeServer blocks cross-origin307/302header/body forwarding while same-originHTTP andstdio remain usable. InstallingContinuity does not replace an existinguserHostSDK;OAuth/TLS/proxies/realMCPservers remain untested. Current production/fulldev audits are zero andthehighgateexits0;picomatch disappeared after advisorywithdrawal,not a shipped codefix.
+
 ## Human authority and release
 
 High/critical changes require two non-author human maintainers on current head. AI never approves or merges. Release approval is an actual GitHub protected-environment HUMAN rule, not model judgment or text marked approved. Maintainers configure it after confirmation; [release workflow](../../.github/workflows/release.yml) prepares only and performs zero public writes. This task changes no remote branch protection or settings; see [executable recommendation](BRANCH_PROTECTION.md).

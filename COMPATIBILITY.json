@@ -8,7 +8,7 @@
   "node": "24.22.3",
   "pnpm": "11.28.5",
   "validation": "local-engineering-passed-mvp-acceptance-open",
-  "validatedAt": "2026-11-19T01:05:17+08:00",
+  "validatedAt": "2026-11-19T02:16:52+08:00",
   "evidence": {
     "publishedRuntime": {
       "result": "passed",
@@ -38,8 +38,9 @@
       "tests": 60,
       "files": 28,
       "testedAt": "2026-11-19T01:03:53+08:00",
-      "publishedRc5Runtime": "not-tested",
-      "rc5Browser": "not-tested",
+      "publishedRc5Runtime": "source-variant-passed-60",
+      "rc5Browser": "source-variant-passed-8-repeat-8",
+      "originalRc4InstallerOnRc5": "not-compatible-by-exact-engine-contract",
       "stablePinUnchanged": true
     },
     "publicPublication": "not-performed",
@@ -49,9 +50,20 @@
       "fflate": "0.8.3"
     },
     "developmentAudit": {
-      "high": 1,
-      "moderate": 1,
-      "releaseGate": "blocked"
+      "high": 0,
+      "moderate": 0,
+      "releaseGate": "audit-passed-human-publication-not-performed",
+      "mcpClient": "2.3.0-project-override",
+      "picomatch": "4.0.7-withdrawn-advisory-not-code-fix"
+    },
+    "mcpTransport": {
+      "result": "passed",
+      "checks": 5,
+      "publicEntrance": "published-dsh-mcp-client-probeServer",
+      "sdkVersion": "2.3.0",
+      "crossOriginDestinationRequests": 0,
+      "oauth": "not-tested",
+      "changesExistingUserHost": false
     }
   },
   "sources": [

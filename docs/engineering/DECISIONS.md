@@ -46,6 +46,10 @@
 
 trusted-base人类review脚本首次bootstrap对空base不存在；公开仓库初始化需人类先审snapshot、在main落地可信gate再启requiredstatus。没有automaticbootstrappass、不执行PR自己修改的approvalcode。发布准备执行highauditgate，真实GitHub环境保护由维护者配置；本地AI或变量不等于approval。
 
+## D-012 · Project-only MCP patch boundary
+
+MCPclient不是Continuity生产功能或外部记忆服务。项目dev/CIHost依赖把SDK解析到2.3.0；官方dsh-mcp-client manifest/source不改，用户安装插件也不会自动替换其HostSDK。[公共probe回归](../../scripts/check-mcp-transport.mjs)实际2.2红→2.3绿：跨源307/302目标0请求，同源/直连/stdio仍通过。默认同源政策来自第一方修复，不设置redirectPolicyfollow或allow-version。审计feed撤回picomatch与MCP代码修复分别记录；实际全量0公告不等于全Host风险消失。[详细范围](MCP_TRANSPORT.md)。
+
 ## Test seams / 本次实现公开测试接口
 
 用户已经在任务中明确指定解析/导入、Memory、Recovery、迁移包、真实插件加载和手机完整流程的验收接口，并授予自主工程决策。本次据此记录：

@@ -7,7 +7,17 @@
 - npm同版本与Git部分源码不同：实际使用接口9DIFF，entry比较31包/16DIFF。两个真实runtime路径各自测试，不用版本相等证明SHA。
 - 项目本地bootstrap commit `7db7a28`，固定点`5082575`；[双轴审查](CODE_REVIEW.md)发现已独立复现/修复。后续最终代码与tarball须再记录。
 
-## Maintenance round — 2026-11-19 01:11 CST
+## Maintenance round2 — 2026-11-19 01:55 CST
+
+- [公共MCPprobe回归](MCP_TRANSPORT.md)2.2.0先红：307转发5次合成header及541正文bytes，302转发2header；项目SDK2.3.0override后目标0请求，5checks通过。直连/同源HTTP及stdio真实运行未变。
+- 生产/全量dev audit0，原highgateexit0。MCP是代码修复；picomatch4.0.7是withdrawnfeed更新而非patch。无ignore/降阈值，用户HostSDK不自动改变。
+- npmrc4/stableca33fd各60/60，phone8/8；并行install期间容量fixture曾30s超时，单项和单worker完整suite通过，负载消退后默认并发60/60。timeout、测试内容与官方Storage未改变；失败trace保留。
+- 最新2e39e704源码在新依赖图60/60。rc5已发布npm消费实验独立执行，engine metadata不匹配的初始Web失败单列，不用sourcegreen代替完整consumer证据。
+- 实际工具Node24.22.3/pnpm11.28.5/Vitest4.1.12；[MCP测试脚本](../../scripts/check-mcp-transport.mjs)与SecurityCI使用同一入口。
+- 已发布rc5sourceconsumer：实际46direct/329DSH包均rc5、npm60/60；仅consumer engine匹配rc5后完整phone8/8并freshhome重复8/8。原6/8及wrapper0测试失败保留，源代码/原测试未改，不宣称原rc4installer兼容。见[初次实验](PUBLISHED_RC5.md) /[跟进](PUBLISHED_RC5_FOLLOWUP.md)。
+- 真实packed消费assert复现缺CODE_OF_CONDUCT和锁文件链接；补齐治理文本、明确源码ZIP含lock、私有证据路径改local-only标签后，所有随包Markdown本地targets检查与nativeLoader通过。源码check和packedcheck各自统计；无runtime/credentials/试验homes打包。
+
+## Maintenance round — 2026-11-19 01:11 CST (round1 snapshot)
 
 - Node24.22.3/pnpm11.28.5，Vitest与coverage4.1.12精确patch。npm0.2.2-rc.4、stableca33fd与latest2e39e704三个轨道均60/60 across28files；phone npmrc4矩阵8/8重跑。
 - Publiclatestprobe从freshclone→packages/vendor/native/system→真实test-pinned，exit0、stablePinUnchanged=true。原22suite缺native tsconfig加载失败与旧网络失败保留trace；补齐官方source而非改转换器。
