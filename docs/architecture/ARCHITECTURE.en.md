@@ -94,7 +94,7 @@ v1 backup includes every memory status, tombstones and retained raw bytes. After
 
 The recorded npm, pinned-source and phone-browser regressions have executed, establishing current deterministic wiring and browser flows on their respective tracks. Overall MVP acceptance still needs a user-approved real App ZIP, Android/iOS device operations and live LLM personality/relationship/story quality. Local checks do not establish cloud Actions, remote governance or publishing success.
 
-Audit tracks remain distinct: production has **0 high/critical and 0 moderate**; the full dev Host closure after the `undici 8.12.2` override still has **1 high (picomatch) / 3 moderate**, leaving the unresolved release gate in place. [Known issues](../engineering/KNOWN_ISSUES.md)
+Current audit:zero production advisories; full devHost after undici8.12.2 andVitest4.1.12 still reports **1high(picomatch)/1moderate(MCPclient)**. PicomatchGHSAiswithdrawn but the registryhighgate still exits1;thegate stays in place. [Known issues](../engineering/KNOWN_ISSUES.md) · [Latest-source supplement](../engineering/UPSTREAM_LATEST.en.md)
 
 Future schema conversion, encryption/signatures, complete Session/separate-attachment backup, whole-model-request token budgets, cross-process writers, opaque-id/display-name renaming, multi-user sharing, large-file RSS/streaming and broader crash-window acceptance are **Planned**. These docs do not replace the Lead-owned [decisions](../engineering/DECISIONS.md), [progress](../engineering/PROGRESS.md), [README](../../README.md) or [requirements](../product/PRD.en.md). The [deterministic runtime check](../../tests/e2e/runtime/continuity.test.ts) establishes wiring, not natural-language quality.
 

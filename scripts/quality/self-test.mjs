@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { approvedLicense } from '../check-licenses.mjs';
-import { localLinks } from '../check-docs.mjs';
+import { checkDocs, localLinks } from '../check-docs.mjs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { scanText } from '../check-secrets.mjs';
 import { sourceHash } from '../check-compatibility.mjs';
 import { classify, currentHumanApprovals, matches } from './risk-review.mjs';
@@ -20,6 +21,14 @@ assert.deepEqual(
   ),
   ['docs/local.md', './README.md'],
 );
+mkdirSync(join(root, 'artifacts'), { recursive: true });
+const ignoredDocs = mkdtempSync(join(root, 'artifacts/docs-check-'));
+try {
+  writeFileSync(join(ignoredDocs, 'ignored.md'), '[generated](missing-generated-target.md)\n');
+  assert.equal(checkDocs().result, 'passed');
+} finally {
+  rmSync(ignoredDocs, { recursive: true, force: true });
+}
 const fakeToken = ['ghp', '_', '0123456789abcdef'.repeat(3)].join('');
 assert.equal(scanText(`token='${fakeToken}'`, 'unit').length, 1);
 assert.equal(scanText("api_key='YOUR_TEST_KEY_REPLACE_ME'", 'unit').length, 0);

@@ -8,7 +8,7 @@
   "node": "24.22.3",
   "pnpm": "11.28.5",
   "validation": "local-engineering-passed-mvp-acceptance-open",
-  "validatedAt": "2026-11-19T00:17:56+08:00",
+  "validatedAt": "2026-11-19T01:05:17+08:00",
   "evidence": {
     "publishedRuntime": {
       "result": "passed",
@@ -31,7 +31,17 @@
     "externalModelIo": "scripted-fixture-only",
     "realAppExport": "not-tested",
     "liveModelQuality": "not-tested",
-    "latestUpstream": "clone-failed-runtime-not-tested",
+    "latestUpstream": {
+      "result": "source-runtime-passed",
+      "sha": "2e39e70496aa02986ca6a820c5d497e816b69d7e",
+      "sourceVersion": "0.2.2-rc.5",
+      "tests": 60,
+      "files": 28,
+      "testedAt": "2026-11-19T01:03:53+08:00",
+      "publishedRc5Runtime": "not-tested",
+      "rc5Browser": "not-tested",
+      "stablePinUnchanged": true
+    },
     "publicPublication": "not-performed",
     "productionAudit": {
       "result": "passed",
@@ -40,7 +50,7 @@
     },
     "developmentAudit": {
       "high": 1,
-      "moderate": 3,
+      "moderate": 1,
       "releaseGate": "blocked"
     }
   },

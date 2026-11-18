@@ -54,7 +54,7 @@ Audited `ca33fd6843b205e279c7ccb6cb73a472c78f5760` differs from multiple same-ve
 
 ## Current executed record
 
-Node24.22.3: published npm and exact audited SHA each60/60 across28files; eight browser checks across two phone viewports. This is not overall MVP acceptance; real App exports and model quality remain separate. See [runtime evidence](RUNTIME_EVIDENCE.md) and [compatibility](COMPATIBILITY.md). Playwright failure attachments use ignored `.runtime/browser-results` instead of clearing unrelated test-results; redact log tokens and never upload production data as CI artifacts.
+Node24.22.3/Vitest4.1.12:published npm andexactauditedSHAeach60/60 across28files;latest2e39e704source also60/60,andnpmrc4phonechecks8/8. [Latest execution](UPSTREAM_LATEST.en.md);source success does not establish publishedrc.5npm/browser consumption. This is not overallMVPacceptance;realAppexports/modelquality remain separate. See[runtime evidence](RUNTIME_EVIDENCE.md)and[compatibility](COMPATIBILITY.md). Playwrightfailureattachmentsuseignored `.runtime/browser-results` rather than clearing other test-results;redacttokens and keep productiondata out ofCIartifacts.
 
 ## Stdlib check scope
 

@@ -94,7 +94,7 @@ v1 backup 保存全部状态记忆、墓碑和仍保留的原字节；故意删�
 
 上述 npm、固定源码与手机浏览器回归已执行，分别证明当前实现的确定性接线与浏览器流程。整体 MVP 仍须用户明确同意的真实 App ZIP、实际 Android/iOS 操作与 live LLM 人设/关系/剧情质量验收；本地检查也不证明 cloud Actions、远端治理或发布生效。
 
-最新 audit 分开记录：production **0 high/critical、0 moderate**；完整 dev Host 闭包在 `undici 8.12.2` override 后仍有 **1 high（picomatch）/3 moderate**，尚未解决的发布 gate 保留。[已知问题](../engineering/KNOWN_ISSUES.md)
+最新audit：production0公告；完整devHost在undici8.12.2与Vitest4.1.12后仍有**1high（picomatch）/1moderate（MCPclient）**。PicomatchGHSAwithdrawn但registryhighgate仍exit1，门禁保持。[已知问题](../engineering/KNOWN_ISSUES.md) · [latest源码补充](../engineering/UPSTREAM_LATEST.md)
 
 未来 schema 转换、加密/签名、完整 Session 与独立附件备份、整模型请求 token 预算、跨进程写者、opaque ID/显示名改名、多用户分享、大文件 RSS/流式处理与更多 crash-window 验收均为 **Planned**。不以本文替代 Lead 的[决策](../engineering/DECISIONS.md)、[进度](../engineering/PROGRESS.md)、[README](../../README.zh-CN.md)与[主需求](../product/PRD.md)；[确定性 runtime 检查](../../tests/e2e/runtime/continuity.test.ts)验证接线，不保证自然语言质量。
 

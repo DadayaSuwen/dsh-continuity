@@ -19,6 +19,10 @@
 - Full official Web stylesheet/Portal integration and asynchronous Workspace initialization; two phone viewports pass their independent full-Host journeys.
 - Verified fflate0.8.3 ZIP64 parser advisory fix; project-only undici8.12.2 override. Production audit0advisories; unresolved devpicomatch high remains a publication gate.
 
+- Matched Vitest/coverage4.1.12 patch removes two mocker moderate advisories; remaining audit1high/1moderate keeps high gate failing without ignores.
+- Latest official source2e39e704(rc.5) actually passes60/60; sparse probe now includes native/system tsconfig references. Stable peer/SHA contract remainsrc.4/ca33fd;rc.5npm/browser consumption is not claimed.
+- Generated delivery documents are excluded from source-doc checks, with a public quality self-test red→green regression.
+
 ### Compatibility / 兼容
 
 - Published npm baseline0.2.2-rc.4，audited GitSHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`，Node24.22.3，pnpm11.28.5。

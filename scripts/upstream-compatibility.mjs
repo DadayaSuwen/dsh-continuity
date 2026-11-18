@@ -62,12 +62,12 @@ try {
     throw new Error('Latest checkout did not yield a full Git SHA');
   report.steps.push({ step: 'clone-and-record-SHA', result: 'passed', sha: report.sha });
   run('git', ['-C', source, 'sparse-checkout', 'init', '--cone']);
-  run('git', ['-C', source, 'sparse-checkout', 'set', 'packages', 'vendor'], {
+  run('git', ['-C', source, 'sparse-checkout', 'set', 'packages', 'vendor', 'native/system'], {
     timeout: 10 * 60 * 1000,
   });
   run('git', ['-C', source, 'checkout', '--detach', report.sha], { timeout: 10 * 60 * 1000 });
   report.checkout =
-    'Sparse official root + packages/vendor; exact committed source, no npm substitutions';
+    'Sparse official root + packages/vendor/native-system references; exact committed source, no npm substitutions';
   writeFileSync(join(working, 'SHA'), `${report.sha}\n`);
   report.publishedSourceDiff = compareSource(source);
   // Export/symbol failures are collected from real Vite-alias tests, not guessed from npm versions.

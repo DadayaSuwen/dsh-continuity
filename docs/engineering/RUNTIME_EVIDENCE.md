@@ -7,7 +7,15 @@
 - npm同版本与Git部分源码不同：实际使用接口9DIFF，entry比较31包/16DIFF。两个真实runtime路径各自测试，不用版本相等证明SHA。
 - 项目本地bootstrap commit `7db7a28`，固定点`5082575`；[双轴审查](CODE_REVIEW.md)发现已独立复现/修复。后续最终代码与tarball须再记录。
 
-## Executed — 2026-11-19 00:17 CST
+## Maintenance round — 2026-11-19 01:11 CST
+
+- Node24.22.3/pnpm11.28.5，Vitest与coverage4.1.12精确patch。npm0.2.2-rc.4、stableca33fd与latest2e39e704三个轨道均60/60 across28files；phone npmrc4矩阵8/8重跑。
+- Publiclatestprobe从freshclone→packages/vendor/native/system→真实test-pinned，exit0、stablePinUnchanged=true。原22suite缺native tsconfig加载失败与旧网络失败保留trace；补齐官方source而非改转换器。
+- 当前生产audit0，开发1high/1moderate，原highgateexit1；Vitest两项moderate已实际消除。Picomatchwithdrawn但registry仍报high，不作为修复；MCPclient待验证升级。
+- docs checker现排除generatedartifacts，公共self-test先红后绿；生成坏链接不影响源码合约。详见[中文补充](UPSTREAM_LATEST.md) /[English](UPSTREAM_LATEST.en.md)和[第一方公告研究](../research/DEPENDENCY_ADVISORY_REVIEW.md)。
+- 本轮V8后端statements83.36/branches71.33/functions90.09/lines85.02%，UIexcluded。原00:17表与初次交付校验和是历史记录，不替代本轮快照。
+
+## Executed — 2026-11-19 00:17 CST (initial delivery snapshot)
 
 | Check                        | Actual command/result                                                               | Evidence and ceiling                                                                                                                                         |
 | ---------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |

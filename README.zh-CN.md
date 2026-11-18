@@ -37,6 +37,8 @@ dsh web
 
 已实际执行真实 Cordis、原生 Storage、JSONL、Session Query、Workspace/Connection、生产 AgentLoop 与官方压缩：npm 运行版 **60/60**，固定官方 SHA 源码版 **60/60**。手机 **8/8** 覆盖390×844、360×800，分别运行完整官方 CLI Web profile 与小型 native Slot Host fixture。合成/脚本模型只证明接线和确定性召回，不冒充真实 Android/iOS 或模型人格质量。见[运行记录](docs/engineering/RUNTIME_EVIDENCE.md)、[兼容元数据](COMPATIBILITY.json)和[开发进度](docs/engineering/PROGRESS.md)。
 
+最新官方源码补充：**2e39e704 /source0.2.2-rc.5，60/60**，完整latestprobe实跑且stablepin不变。rc.5已发布npm与完整rc.5browser消费仍未测试。见[最新证据](docs/engineering/UPSTREAM_LATEST.md)。
+
 DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护者，不自动替换稳定 pin。
 
 ## 隐私

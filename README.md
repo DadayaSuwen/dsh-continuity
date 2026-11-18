@@ -37,6 +37,8 @@ Source audit baseline: [`master` SHA `ca33fd6843b205e279c7ccb6cb73a472c78f5760`]
 
 Real Cordis, native Storage, JSONL persistence, Session Query, Workspace/Connection, production AgentLoop and official compaction have been executed: **60/60** on published npm and **60/60** on the exact audited source SHA. The **8/8** phone checks cover 390×844 and 360×800, both the complete official CLI Web profile and the smaller native-slot Host fixture. Synthetic/scripted tests prove wiring and deterministic retrieval, not real Android/iOS or live-model personality quality. See [runtime evidence](docs/engineering/RUNTIME_EVIDENCE.md), [compatibility metadata](COMPATIBILITY.json) and [progress](docs/engineering/PROGRESS.md).
 
+Latest official-source supplement: **2e39e704 / source0.2.2-rc.5,60/60** through the actual latest probe with stable pin unchanged. Published rc.5 npm and full rc.5 browser consumption remain untested. [Latest evidence](docs/engineering/UPSTREAM_LATEST.en.md)
+
 DSH remains Developer Preview. Daily upstream checks alert on changes; untested upstream interfaces do not silently replace the stable pin.
 
 ## Privacy

@@ -1,6 +1,6 @@
 # 开发进度 / Engineering progress
 
-## 2026-11-19 00:17 CST · 可安装工程预览，整体 MVP 待真实数据与模型验收
+## 2026-11-19 01:11 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
 
 项目是独立 **DSH Continuity bundle 插件**，不是浏览器扩展、另一套客户端或 Harness。代码在独立目录；官方源码保持只读和 clean。所有本地开发、提交与测试均未公开发布，当前运行中的 3080 GUI 未改动。
 
@@ -18,19 +18,20 @@
 
 ### 实际测试 / Executed evidence
 
-工具链为隔离 **Node 24.22.3 / pnpm 11.28.5**，主机默认 Node22/pnpm9未替换。官方基准为 [`master` SHA ca33fd6843b205e279c7ccb6cb73a472c78f5760](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760)，已发布依赖 `0.2.2-rc.4`。
+工具链为隔离 **Node 24.22.3 / pnpm 11.28.5 / Vitest4.1.12**，主机默认 Node22/pnpm9未替换。官方稳定基准为 [`master` SHA ca33fd6843b205e279c7ccb6cb73a472c78f5760](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760)，已发布依赖 `0.2.2-rc.4`；[最新源码补充](UPSTREAM_LATEST.md)记录2e39e704 / rc.5源码轨道，非rc.5 npm/browser消费声明。
 
 | 路径                                       | 最近实际结果                                          | 说明                                                                                                |
 | ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | npm 官方运行版回归                         | **60/60，28 文件**                                    | 真实 Cordis/Storage/Session/Query/Workspace/Connection/AgentLoop/compaction；仅外部模型 IO scripted |
 | exact SHA 源码回归                         | **60/60，28 文件**                                    | 官方 + vendor 源码 aliases；不是只改版本标题                                                        |
+| latest2e39e704 源码回归                    | **60/60，28文件**                                     | 正式latestprobeexit0；原生源码引用补齐，stablePinUnchanged=true                                     |
 | 手机 E2E                                   | **8/8**                                               | 完整官方 CLI Web 与 root Slot fixture；390×844、360×800，两个隔离认证 Host 自动启动                 |
 | 严格类型、ESLint、格式                     | **通过**                                              | 最终源码逐项实跑                                                                                    |
 | 密钥模式扫描                               | **149 文本，0 findings**（含最终新增文件）            | 合成fixture独立排除；最终stage后tracked扫描单列                                                     |
 | build → pack → 隔离 consumer → 原生 Loader | **通过**                                              | 57包consumer，最终构建字节与校验和保留                                                              |
 | npm/源码差异                               | 实际使用接口 **9 DIFF**；entry 比较 **31 包/16 DIFF** | 同版本号不代表源码同一                                                                              |
 | production audit                           | 0 high/critical，0 moderate                           | 与完整开发 Host 闭包分开                                                                            |
-| 开发闭包 audit                             | undici 修复后 **1 high / 3 moderate**                 | picomatch 4.0.7 公告尚无发布修复；发布 gate 保持失败                                                |
+| 开发闭包 audit                             | **1 high / 1 moderate**                               | Vitest4.1.12消除两项moderate；picomatchwithdrawn但audit仍报high，MCPclient待验证修复，gateexit1     |
 
 详细命令与边界：[运行证据](RUNTIME_EVIDENCE.md)、[测试指南](TESTING.md)、[已知问题](KNOWN_ISSUES.md)。
 
@@ -49,7 +50,7 @@
 ### 尚未验收 / Not accepted
 
 - 用户明确允许使用的真实 DeepSeek App ZIP、真实 Android/iOS 文件选择/下载、跨模型自然语言人格与剧情质量。
-- 上游 latest 源码实际运行：三次官方 clone 超时/连接重置；只读 `ls-remote` 观察 `2e39e70496aa02986ca6a820c5d497e816b69d7e`，不是兼容结论。稳定 pin 未改。
+- 上游rc.5已发布npm消费与完整browser仍未验收；latest2e39e704官方源码60/60已通过。此前三次网络失败与22套件缺native目录的失败trace仍保留；stablepin未改。
 - 大文件 RSS/中断窗口全覆盖、跨进程写者、完整 Session/附件迁移、加密/签名/未来 schema 升级。
 - cloud Actions/CodeQL、人类远端 Review/branch/environment 配置、GitHub/npm Release；尚无公开仓库或 tag。
 

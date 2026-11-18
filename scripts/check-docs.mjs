@@ -10,6 +10,7 @@ const excluded = new Set([
   '.runtime',
   '.test',
   'dist',
+  'artifacts',
   'coverage',
   'test-results',
   'playwright-report',

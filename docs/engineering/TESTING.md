@@ -54,7 +54,7 @@ node scripts/upstream-compatibility.mjs
 
 ## 当前运行记录
 
-Node24.22.3：npm与exactauditedSHA各60/60、28文件；两个手机视口共8/8。结果不是MVP接受，真实App/export/model仍单列。详见[运行证据](RUNTIME_EVIDENCE.md)和[兼容](COMPATIBILITY.md)。Playwright失败attachments在ignored `.runtime/browser-results`，不会清空其他 `test-results` 报告；日志token须脱敏，生产数据不作为CIartifact。
+Node24.22.3/Vitest4.1.12：npm与exactauditedSHA各60/60、28文件；latest2e39e704源码亦60/60，两个npmrc4手机视口共8/8。[最新实测](UPSTREAM_LATEST.md)；latest源码通过不等于rc.5npm/browser消费。结果不是MVP接受，真实App/export/model仍单列。详见[运行证据](RUNTIME_EVIDENCE.md)和[兼容](COMPATIBILITY.md)。Playwright失败attachments在ignored `.runtime/browser-results`，不会清空其他 `test-results` 报告；日志token须脱敏，生产数据不作为CIartifact。
 
 ## stdlib检查的范围
 

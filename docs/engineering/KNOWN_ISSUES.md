@@ -1,12 +1,12 @@
 # 已知问题 / Known issues
 
-更新：2026-11-19 00:17 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
+更新：2026-11-19 01:11 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
 
 ## 需要外部证据 / External acceptance
 
 1. **真实导出与模型质量**：当前仅合成官方 schema 和 scripted 外部模型 IO。待用户明确允许的实际 App ZIP、至少两个真实模型的人设/关系/剧情回归；真实调用可能涉及额度，另行确认。
-2. **上游 latest**：稳定 ca33fd SHA 已测试，`0.2.2-rc.4` npm 单独测试。最新官方 clone 三次 ETIMEDOUT/connection reset，未运行最新源码。`ls-remote` SHA `2e39e70496aa02986ca6a820c5d497e816b69d7e` 仅发现证据。每日 workflow 不自动换 pin。
-3. **公开供应链 gate**：完整开发 Host 仍有picomatch4.0.7 high和3项moderate；high暂无已发布修复。undici已项目内精确override8.12.2，fflate已升级0.8.3，生产audit现为0公告。不降低audit阈值；发布gate仍失败，开发漏洞单列。
+2. **上游latest消费边界**：2e39e704 / 0.2.2-rc.5官方源码60/60与完整latestprobe已通过；npm0.2.2-rc.4/stableca33fd仍独立验证。rc.5已发布npm与完整rc.5browser尚未验收，第三方/native依赖沿用本项目安装图。每日workflow不自动换pin。见[补充证据](UPSTREAM_LATEST.md)。
+3. **公开供应链gate**：完整开发Host当前1high /1moderate；Vitest/coverage4.1.12消除两项mockermoderate。Picomatch4.0.7 GHSA虽withdrawn，npm审计仍报high，4.0.8未发布；withdrawal不是修复。MCPclient2.2.0仍moderate，rc.5 npm仍精确依赖它；2.3+兼容与redirect验证待做。生产audit0公告，high门禁实际exit1，未降阈值或ignore。见[第一方研究](../research/DEPENDENCY_ADVISORY_REVIEW.md)。
 4. **远端治理与发布**：八工作流是本地代码，cloud Actions/CodeQL/actionlint尚无运行证明；CODEOWNERS 模板未启用，branch/environment/人类 reviewer/npm trusted publishing 未配置。只交付发布准备，无 public writes。
 5. **首次 governance bootstrap**：trusted-base checker 首次进入空基线时不存在。人类需在公开仓库确认前检查初始化 snapshot，将可信 gate 放入 main 后再开启 required status；任何当前 PR 不执行自己的修改版审批器，不设置自动通过。
 
