@@ -1,0 +1,11 @@
+- insert:
+    - id: dsh-continuity
+      name: dsh-continuity
+      config:
+        ownerId: local-owner
+        maxUploadBytes: 134217728
+        maxExpandedBytes: 536870912
+        maxEntryBytes: 67108864
+        maxFiles: 10000
+        maxCompressionRatio: 200
+        contextTokenBudget: 2048

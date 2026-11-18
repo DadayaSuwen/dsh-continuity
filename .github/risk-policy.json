@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "levels": {
+    "low": {
+      "rank": 0,
+      "humanApprovals": 0,
+      "meaning": "Documentation-only; normal branch review still applies."
+    },
+    "medium": {
+      "rank": 1,
+      "humanApprovals": 1,
+      "meaning": "Tests, client UI or ordinary source edits."
+    },
+    "high": {
+      "rank": 2,
+      "humanApprovals": 2,
+      "meaning": "Import, scope isolation, persistence, model context or supply chain."
+    },
+    "critical": {
+      "rank": 3,
+      "humanApprovals": 2,
+      "meaning": "Release controls, policy itself, trust roots or compatibility pin."
+    }
+  },
+  "rules": [
+    {
+      "level": "critical",
+      "patterns": [
+        ".github/workflows/release.yml",
+        ".github/risk-policy.json",
+        ".github/CODEOWNERS",
+        "scripts/quality/risk-review.mjs",
+        "scripts/quality/release-*.mjs",
+        "scripts/quality/branch-protection.mjs",
+        "COMPATIBILITY.json",
+        "LICENSE",
+        "NOTICE"
+      ]
+    },
+    {
+      "level": "high",
+      "patterns": [
+        ".github/**",
+        "scripts/**",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".npmrc",
+        "cordis.patch.yml",
+        "src/security/**",
+        "src/migration/**",
+        "src/memory/**",
+        "src/recovery/**",
+        "src/plugin.ts",
+        "src/routes.ts",
+        "src/storage.ts",
+        "src/model.ts",
+        "schemas/**",
+        "SECURITY.md"
+      ]
+    },
+    {
+      "level": "medium",
+      "patterns": ["src/**", "tests/**", "examples/**", "*config*", "tsconfig*.json"]
+    }
+  ],
+  "largeChange": { "files": 20, "lines": 500, "level": "high" },
+  "reviewRules": {
+    "allowAuthorApproval": false,
+    "allowBotApproval": false,
+    "requireCurrentHead": true,
+    "acceptedPermissions": ["write", "maintain", "admin"],
+    "autoMerge": false
+  }
+}

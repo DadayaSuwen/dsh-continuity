@@ -1,0 +1,13 @@
+export { apply, Config, Continuity, inject, name } from './plugin.ts';
+export type { Config as ContinuityConfig } from './plugin.ts';
+export { Memory, ProposalSchema } from './memory/memory.ts';
+export type { MemoryProposal } from './memory/memory.ts';
+export { Migration } from './migration/migration.ts';
+export type { MigrationResult } from './migration/migration.ts';
+export { exportPackage, restorePackage, MigrationPackageSchema } from './migration/package.ts';
+export { previewImport } from './migration/preview.ts';
+export { buildRecovery } from './recovery/recovery.ts';
+export type { RecoveryContext, RecoveryOptions } from './recovery/recovery.ts';
+export { ImportError, DEFAULT_ARCHIVE_LIMITS } from './security/archive.ts';
+export type { ArchiveLimits } from './security/archive.ts';
+export * from './model.ts';

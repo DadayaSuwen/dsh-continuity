@@ -1,0 +1,10 @@
+upstream
+.toolchain
+node_modules
+dist
+coverage
+.runtime
+.test
+pnpm-lock.yaml
+test-results
+playwright-report

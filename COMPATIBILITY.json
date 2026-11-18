@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/DeepSeek-ai/deepseek-harness",
+  "branch": "master",
+  "sha": "ca33fd6843b205e279c7ccb6cb73a472c78f5760",
+  "dshVersion": "0.2.2-rc.4",
+  "pluginVersion": "0.1.0",
+  "auditedAt": "2026-11-18T19:11:06+08:00",
+  "node": "24.22.3",
+  "pnpm": "11.28.5",
+  "validation": "pending",
+  "sources": [
+    "packages/core/agent",
+    "packages/core/agent-loop",
+    "packages/core/session",
+    "packages/storage",
+    "packages/experimental/deepseek-chat-import",
+    "packages/session-query",
+    "packages/test-support"
+  ]
+}

@@ -1,0 +1,58 @@
+name: Test matrix
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - src/**
+      - tests/**
+      - package.json
+      - pnpm-lock.yaml
+      - scripts/build.mjs
+      - scripts/check-compatibility.mjs
+      - scripts/quality/**
+      - vitest.config.ts
+      - .github/workflows/test-matrix.yml
+      - COMPATIBILITY.json
+permissions:
+  contents: read
+concurrency:
+  group: matrix-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  tested-platform:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['24.22.3']
+        dsh: ['0.2.2-rc.4']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 11.28.5
+          run_install: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Exact published npm version contract, not a SHA test
+        run: pnpm check:compatibility
+        env:
+          EXPECTED_DSH_VERSION: ${{ matrix.dsh }}
+      - run: node scripts/quality/self-test.mjs
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: matrix-${{ matrix.os }}-node${{ matrix.node }}-npm${{ matrix.dsh }}
+          path: test-results/
+          if-no-files-found: error
+          retention-days: 7

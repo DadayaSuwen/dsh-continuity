@@ -1,0 +1,50 @@
+name: Human risk review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+  workflow_dispatch:
+    inputs:
+      pull_request:
+        description: PR number to recheck after HUMAN reviews
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: human-review-${{ github.event.pull_request.number || inputs.pull_request }}
+  cancel-in-progress: true
+jobs:
+  review:
+    name: review
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout trusted base policy, never execute PR head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.22.3'
+      - name: Compute risk and require current-head human maintainer approvals
+        run: node scripts/quality/risk-review.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pull_request }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: human-risk-review-${{ github.event.pull_request.number || inputs.pull_request }}
+          path: test-results/risk-review.json
+          if-no-files-found: error
+          retention-days: 14
+# After submitting human reviews, rerun the original PR job so its status attaches
+# to that PR head/merge commit. Manual dispatch is supplementary evidence only.
+# Repository branch/ruleset protection must require this status; YAML alone does
+# not activate remote branch protection. No bot submits reviews or merges PRs.

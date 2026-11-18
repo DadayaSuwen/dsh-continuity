@@ -1,0 +1,16 @@
+# Template, NOT active ownership: replace HUMAN_MAINTAINER_TEAM with an existing
+# human-maintained repo team/user after confirmation. GitHub ignores commented
+# lines; no fictional team or AI account is claimed as an active code owner.
+# * @OWNER/HUMAN_MAINTAINER_TEAM
+# /.github/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /scripts/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/security/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/migration/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/memory/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/recovery/ @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/plugin.ts @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/routes.ts @OWNER/HUMAN_MAINTAINER_TEAM
+# /src/storage.ts @OWNER/HUMAN_MAINTAINER_TEAM
+# /COMPATIBILITY.json @OWNER/HUMAN_MAINTAINER_TEAM
+# /package.json @OWNER/HUMAN_MAINTAINER_TEAM
+# /pnpm-lock.yaml @OWNER/HUMAN_MAINTAINER_TEAM
