@@ -23,7 +23,7 @@
 
 - `pnpm test`：已安装npm版官方Cordis/Storage/Session/Query/AgentLoop/compaction。
 - `pnpm test:pinned`：[runner](../../scripts/test-pinned.mjs) + [source aliases](../../vitest.pinned.config.ts)，真实官方与vendor源码、标准decorator预转换。
-- `node scripts/packed-smoke.mjs`：fresh build/pack、独立consumer官方peer安装、原生host/client导入和officialLoader entry。
+- `pnpm test:packed`：fresh build/pack、独立consumer官方peer安装、原生host/client导入和officialLoader entry。
 - `pnpm test:mobile`：[自主Host runner](../../scripts/test-mobile.mjs)，启动独立认证Host与官方Web profile，使用项目隔离Documents目录，结束清理测试进程。
 
 只对模型外部IO脚本化；没有Mock Session/Storage/Cordis。Scripted回复不证明人格质量。
@@ -36,6 +36,6 @@
 
 ## Release blockers
 
-本轮production/完整开发audit0公告，原high门禁exit0；未降低阈值或ignore。项目SDK2.3.0override经[真实MCPprobe](MCP_TRANSPORT.md)5项验证；picomatch4.0.7因撤回公告被feed移除，没有codefix。此override不通过插件安装传播到用户Host，OAuth/TLS仍未验收。不做公开Release/npm发布，真实人类审批与仓库保护未配置。
+最近成功round3的production/完整开发audit0公告，原high门禁exit0；round4刷新fetch失败，未完成新的feed/high查询，锁/阈值/ignore保持原值。项目SDK2.3.0override经[真实MCPprobe](MCP_TRANSPORT.md)5项验证；picomatch4.0.7因撤回公告被feed移除，没有codefix。此override不通过插件安装传播到用户Host，OAuth/TLS仍未验收。不做公开Release/npm发布，真实人类审批与仓库保护未配置。
 
 实际App ZIP、真实模型质量、真实移动系统、大包压力、跨进程writer、完整Session/附件包均见[未决事项](KNOWN_ISSUES.md)。兼容通过是本地工程组合，不等于整体产品验收。

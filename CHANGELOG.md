@@ -17,7 +17,7 @@
 - First-bind concurrency, edited-memory re-extraction uniqueness/tombstones, overflow-before-persistence and successful retries after historical failed turns.
 - Explicit alternate-leaf commit/extraction, imported Session-use receipt aliases, live/resumed official model.select, context refresh after real compaction.
 - Full official Web stylesheet/Portal integration and asynchronous Workspace initialization; two phone viewports pass their independent full-Host journeys.
-- Verified fflate0.8.3 ZIP64 parser fix; project-only undici8.12.2 andMCPclient2.3.0overrides. Current production/developmentaudit0;picomatchwithdrawn-feed removal is not a codefix. Public release remains unperformed.
+- Verified fflate0.8.3 ZIP64 parser fix; project-only undici8.12.2 andMCPclient2.3.0overrides. Last successful round3 production/development audit0; round4 refreshfetchfailed, lock unchanged;picomatchwithdrawn-feed removal is not a codefix. Public release remains unperformed.
 
 - Matched Vitest/coverage4.1.12 removes two mocker advisories. MCP2.2.0→2.3.0realpublicprobe regression blocks cross-originfixtureheaders/bodies while direct/same-originHTTP/stdio pass; unchanged high gate now passes. Existing userHostSDKs are not automatically changed.
 - Latest official source2e39e704(rc.5) passes60/60; sparse probe includes native/system. Independent exact-rc.5consumer runtime60/60/fullphone8/8(repeat8)passes aftercorrectengine metadata;theoriginalinstallercontractremainsrc.4/ca33fd.

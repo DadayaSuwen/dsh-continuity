@@ -24,7 +24,7 @@ CI tokens default to read. Untrusted PRs receive no publish credentials and use 
 
 [License check](../../scripts/check-licenses.mjs) reads actual installed runtime closure and required peers; missing dependencies/unknown SPDX fail. [NOTICE](../../NOTICE) retains DeepSeek/Cordis/bundled MIT attribution. [Security workflow](../../.github/workflows/security.yml) adds audit/dependency review/CodeQL, whose results exist only after actual execution.
 
-The project-only MCP SDK2.3.0override applies to dev/CI dependencies. [Public transport regression](MCP_TRANSPORT.en.md) verifies actual DSHprobeServer blocks cross-origin307/302header/body forwarding while same-originHTTP andstdio remain usable. InstallingContinuity does not replace an existinguserHostSDK;OAuth/TLS/proxies/realMCPservers remain untested. Current production/fulldev audits are zero andthehighgateexits0;picomatch disappeared after advisorywithdrawal,not a shipped codefix.
+The project-only MCP SDK2.3.0override applies to dev/CI dependencies. [Public transport regression](MCP_TRANSPORT.en.md) verifies actual DSHprobeServer blocks cross-origin307/302header/body forwarding while same-originHTTP andstdio remain usable. InstallingContinuity does not replace an existinguserHostSDK;OAuth/TLS/proxies/realMCPservers remain untested. The last successful round3 production/full-development audit snapshot was zero with high-gate exit0. Both round4 refreshes failed to fetch; the current feed was not revalidated, and lock/thresholds/ignores are unchanged. picomatch disappeared after advisorywithdrawal,not a shipped codefix.
 
 ## Human authority and release
 

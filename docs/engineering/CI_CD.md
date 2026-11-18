@@ -49,7 +49,7 @@
 2. 设置 environment variable `RELEASE_HUMAN_APPROVAL_CONFIGURED=true` 是维护者配置声明，不是 AI approval，也不替代 GitHub 真实 required-reviewer rule；初始默认缺失即失败。
 3. 输入 exact semver，匹配 package version、`COMPATIBILITY.pluginVersion`、已存在 `vVERSION` tag 与 checkout HEAD；commit 在 main历史。手动 dispatch 必须从 main启动。
 4. [预检](../../scripts/quality/release-preflight.mjs) 只读检查 registry version/GitHub Release不存在；网络错误失败。全局并发串行化，并在 environment Review 后再检一次，防 stale 检查。
-5. 重新运行质量、high依赖audit、exact SHA、npm runtime、pack与浏览器检查；当前picomatch high仍让gate失败，不降低阈值。[准备脚本](../../scripts/quality/release-prepare.mjs) 校验被 Loader 测过的 exact tarball SHA256，保留 tarball/checksums/local GitHub Release draft及日志。
+5. 重新运行质量、high依赖audit、exact SHA、npm runtime、pack与浏览器检查；最近成功round3 audit为0公告/highgate0，round4新查询fetch失败，不能以旧snapshot替代fresh gate，不降低阈值。[准备脚本](../../scripts/quality/release-prepare.mjs) 校验被 Loader 测过的 exact tarball SHA256，保留 tarball/checksums/local GitHub Release draft及日志。
 6. 本工作流没有 npm/GitHub发布命令、`contents: write`、`id-token: write`、npm token。真正公开 npm publish/GitHub Release 是**另一项需用户明确确认、人类 Review 的变更**，尚未执行。
 
 `environment: release` 单独写在 YAML 会在某些条件下创建未保护 environment；因此不可宣称 YAML 自带人为 approval。参见 [GitHub environment rules](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)。
