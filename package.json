@@ -43,6 +43,7 @@
     "playwright.config.ts",
     "eslint.config.mjs",
     ".node-version",
+    ".gitattributes",
     ".npmrc",
     ".prettierrc.json",
     ".prettierignore",
