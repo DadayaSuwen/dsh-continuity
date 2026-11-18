@@ -53,3 +53,17 @@
 依据PRD21/23的durable重复协调、honestpartial和原events不改；reviewer8affcf66确认无实质scopecreep/运行实现缺陷。**1个轻微复现性问题**：PRD27要求可复现CI，初稿CI只调用test:resources默认1次，文档范围是8×2。Lead将CI命令加`-- --repeat=2`，公开同样pnpm命令实际验证，不以一次CI观察等价两次minmax。
 
 本轮双轴：Standards0hard+1heuristic，最差为条件性spawn重复；Spec1minor，最差为重复参数缺失，已修正。报告彼此不合并或重新排名。两reviewer只读、无代码改动/paid/publiccalls；MVP和云端人类审批仍未接受。
+
+## Maintenance round4 — fixeded431c5 source archive review
+
+固定点ed431c5c5d9b9fdcc1d2a3a234bccff4580b506b；审`git diff fixed`当前staged+unstaged和新增source-smoke/SOURCE_ARCHIVE双语文本。HEAD当时仍等于fixed，非空workingtree才是范围，不以空commitdiff为审查。实际旧ZIP无Git先红，candidate新ZIP install/build/60runtime/9checkpoint/16resources/Loader通过。
+
+### Standards
+
+独立reviewered770aa6确认0hard、0具体heuristic。ownroot.git与真实top/fullSHA集中在common.checkoutCommit，两个harness复用；公开selftest测无Git祖先子目录、损坏gitdir和真checkout。source-smoke限额/路径/新wx目录/隔离environment/真实frozeninstall与nonemptytests符合CONTRIBUTING27/31；只是可信developerarchive，不引入未知代码运行服务。正式src、锁、审核/发布和官方pinnedGit门均不改。
+
+### Spec
+
+PRD21/23/27/42的真实持久化/可复现工程/保留验收边界：readonlyreviewerbef39e18确认0新增实质问题。ordinaryarchivecommit=null与代码hash并列，不冒认ancestorGit或upstreamSHA；CIcurrentHEAD ZIP和同publictest:source接线、installedtooling/先build文档与真实消费者一致。最终commit ZIP精确摘要复测仍是既定交付步骤，候选不是最终证据。
+
+两轴只读未运行测试；本轮Standards0hard/0heuristic，Spec0findings，无单轴最差故障。结论分列，不合并评分；MVP真人App/live/OS与云端approval仍未完成。

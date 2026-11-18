@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import { approvedLicense } from '../check-licenses.mjs';
 import { checkDocs, localLinks } from '../check-docs.mjs';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { scanText } from '../check-secrets.mjs';
 import { sourceHash } from '../check-compatibility.mjs';
 import { classify, currentHumanApprovals, matches } from './risk-review.mjs';
 import { exactReleaseVersion } from './release-preflight.mjs';
-import { readJson, root } from './common.mjs';
+import { checkoutCommit, readJson, root } from './common.mjs';
 import { join } from 'node:path';
 
 assert.equal(approvedLicense('MIT'), true);
@@ -26,9 +26,21 @@ const ignoredDocs = mkdtempSync(join(root, 'artifacts/docs-check-'));
 try {
   writeFileSync(join(ignoredDocs, 'ignored.md'), '[generated](missing-generated-target.md)\n');
   assert.equal(checkDocs().result, 'passed');
+  assert.equal(
+    checkoutCommit(ignoredDocs),
+    null,
+    'A source directory must not inherit its ancestor checkout SHA',
+  );
+  writeFileSync(join(ignoredDocs, '.git'), 'invalid synthetic gitdir\n');
+  assert.equal(
+    checkoutCommit(ignoredDocs),
+    null,
+    'Unavailable Git metadata is not a fabricated source identity',
+  );
 } finally {
   rmSync(ignoredDocs, { recursive: true, force: true });
 }
+if (existsSync(join(root, '.git'))) assert.match(checkoutCommit() ?? '', /^[a-f0-9]{40}$/u);
 const fakeToken = ['ghp', '_', '0123456789abcdef'.repeat(3)].join('');
 assert.equal(scanText(`token='${fakeToken}'`, 'unit').length, 1);
 assert.equal(scanText("api_key='YOUR_TEST_KEY_REPLACE_ME'", 'unit').length, 0);

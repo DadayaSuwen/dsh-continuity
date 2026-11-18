@@ -6,6 +6,29 @@
 
 Node **24.22.3**、pnpm **11.28.5**、官方 npm DSH **0.2.2-rc.4**。[合约](../../COMPATIBILITY.json) 分别保存 npm 版本与 exact Git SHA。[package scripts](../../package.json) 是实际命令来源，不使用主机默认的 Node22/pnpm9来宣称兼容。
 
+源码 ZIP 进入内层 `dsh-continuity-0.1.0` 包根目录，使用你已安装的 Node24.22.3 / pnpm11.28.5。ZIP 含锁文件，不含 `.git`、`.toolchain` 或 `dist`，先构建再测资源：
+
+```bash
+node --version
+pnpm --version
+pnpm install --frozen-lockfile
+node scripts/quality/self-test.mjs
+pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm test
+pnpm build
+pnpm test:interruption
+pnpm test:resources -- --repeat=2
+pnpm check:docs
+pnpm check:licenses
+pnpm check:compatibility
+```
+
+中断/资源 runner 的 `sourceCommit` 是可选证据：仅本目录 `.git` 且 Git top-level 确实匹配时记录真实 SHA，否则为 `null`；harness/worker/dist 摘要继续保存，不冒认祖先 Git 或上游 SHA。tracked 密钥扫描、官方 pinned 源码检查和发布审批仍保留各自 Git 前提；普通 ZIP 不把它们伪称通过。
+
+以下是原始开发机的隔离工具链命令，**仅适用于已建立该私有 `.toolchain` 的本机 checkout**，不是 ZIP 自带工具：
+
 ```bash
 # Git Bash from D:/Desktop/dsh-continuity; scoped PATH, no global replacement
 export PATH="$PWD/.toolchain/node-v24.22.3-win-x64:$PWD/.toolchain/pnpm/node_modules/.bin:$PATH"
@@ -34,7 +57,8 @@ node "$PNPM_SCRIPT" check:compatibility
 - **集成**：官方 Cordis + StorageJson/Domain/JSONL，真正 temp filesystem与保存/加载，不替代 Session数据库。
 - **npm runtime**：已安装 npm官方模块、插件 lifecycle与真实 production AgentLoop；仅外部模型 IO scripted，不访问付费模型。
 - **pinned source**：`pnpm test:pinned` 通过 [Lead runner](../../scripts/test-pinned.mjs) 与真实官方源码 Vite alias，不是 npm runtime 换一个标题。
-- **packed Loader**：`node scripts/packed-smoke.mjs` freshbuild→actualpack→独立consumer官方peer→原生host/client与Loader/Fiber，同时检查随包所有Markdown本地目标。CODE_OF_CONDUCT随包，pnpm锁只在源码checkout/独立sourceZIP，不把私有试验homes打包来满足链接。Consumer清除token/sourcealiases；缺requiredHostservices时Fiberpending不等于activation，功能路径由test:runtime验证。
+- **packed Loader**：`pnpm test:packed`（直接 `node scripts/packed-smoke.mjs` 时，Windows 需设置已安装 pnpm 的真实 JS 入口 `PNPM_SCRIPT`；pnpm script 会提供 `npm_execpath`） freshbuild→actualpack→独立consumer官方peer→原生host/client与Loader/Fiber，同时检查随包所有Markdown本地目标。CODE_OF_CONDUCT随包，pnpm锁只在源码checkout/独立sourceZIP，不把私有试验homes打包来满足链接。Consumer清除token/sourcealiases；缺requiredHostservices时Fiberpending不等于activation，功能路径由test:runtime验证。
+- **源码 ZIP 消费**：`pnpm test:source -- SOURCE_ZIP`只对本项目可信生成的源码包运行：限额/路径检查后，新的无 Git 目录实际冻结安装→构建→非空runtime→9个中断节点→16个资源观察→packed官方Loader。不复制开发机node_modules、不初始化Git；报告含ZIPhash，子报告commit为null。用户聊天/未知第三方源码不交给这条开发测试命令。
 - **手机浏览器**：`pnpm exec playwright install --with-deps chromium` 后 `pnpm test:mobile`；runner先build，再启动隔离认证Host与完整官方CLI Web，使用ephemeralports和projectDocuments，结束关闭子进程。390×844、360×800八项当前通过，UI如实归属和scope；本机Chrome路径只用显式环境变量，CI使用标准PlaywrightChromium。不是Android/iOS实机或live模型质量证明。
 
 - **MCP传输**：`pnpm test:mcp`通过[已发布公共probe](../../scripts/check-mcp-transport.mjs)、真实nestedSDK、loopback307/302目标观察和Nodestdio；5checks不计为新增Vitestcases，OAuth/TLS/真实Host未测。[范围](MCP_TRANSPORT.md)。

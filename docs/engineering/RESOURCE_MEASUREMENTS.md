@@ -12,6 +12,14 @@ export PATH="$PWD/.toolchain/node-v24.22.3-win-x64:$PATH"
 node.exe scripts/measure-resources.mjs --repeat=2
 ```
 
+历史测量命令依赖原始开发机的私有 `.toolchain`。普通源码 ZIP 使用已安装 Node24/pnpm11，在内层包根执行以下步骤；新的 runner 无 Git 时记录 `sourceCommit:null`，保留真实代码/构建 hash：
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+pnpm test:resources -- --repeat=2
+```
+
 这是 **8种有界场景 × 2轮 = 16个独立子进程观察**，不是16项新增Vitest或产品性能验收。先导单轮和中间确认也保留；本文表格只引用最终脚本确认轮，不混用结果。
 
 - 当前生产源码基准commit `ca1b65ce04b11b2d76557e60bd30d3572f69348f`，Node **24.22.3 win-x64**，fflate **0.8.3**。

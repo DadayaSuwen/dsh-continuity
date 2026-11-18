@@ -7,6 +7,14 @@
 - npm同版本与Git部分源码不同：实际使用接口9DIFF，entry比较31包/16DIFF。两个真实runtime路径各自测试，不用版本相等证明SHA。
 - 项目本地bootstrap commit `7db7a28`，固定点`5082575`；[双轴审查](CODE_REVIEW.md)发现已独立复现/修复。后续最终代码与tarball须再记录。
 
+## Maintenance round4 — source archive consumer
+
+- [源包验证](SOURCE_ARCHIVE.md) /[English](SOURCE_ARCHIVE.en.md)：原ed431c5交付ZIP在C盘true-noGit目录frozeninstall/build通过，中断/资源测试因强制rev-parse HEAD失败。早期C盘offlinecache缺包是环境失败；选择已锁定D盘store完成实际安装后才复现代码问题。各失败记录保留。
+- 最小optionalcheckoutCommit只给ordinaryharness.metadata；本目录.git+真实top/fullSHA才记录，否则null，code/dist/worker摘要不删。祖先checkout身份与损坏gitdir有publicself-test，审批/tracksecret/officialpinnedGitgates原样保留。
+- stagedtreecandidate ZIP freshfrozen747依赖/build/publicselftest/60runtime/9hardstop/16resource/pack-nativeLoader60Markdown689localtargets通过。没有复用node_modules、Gitinit或真实数据，candidate与finalexactZIP不能互换，最终交付独立报告记录exacthash。
+- 本轮stableca33fd/latest2e39e704各60/60、phone完整Web/Slot8/8（21.9s）、MCP5真实probe通过；生产代码/lock均无diff。registryaudit原命令和一次15s无自动重试刷新均fetchfailed，prod未给出公告数据、dev/high未执行完成；round3最近0snapshot保留但不作为本轮freshpass。
+- `test:packed`提供portablepnpmcontext，`test:source`复验可信项目源码archive；双语文档补installedtooling/buildfirst和历史private.toolchain区分。CIcurrentHEAD archive调用同publicconsumer，Linux/cloud尚未执行。
+
 ## Maintenance round3 — 2026-11-19 03:05 CST
 
 - [导入中断验证](IMPORT_INTERRUPTION.md) /[English](IMPORT_INTERRUPTION.en.md):九种源保存/取消/计划ID/partialflush/fullflush/close/workspaceattach/importreceipt/挂接错误条件，实际测试进程exit73，freshprocess验证exit0。原件精确、完整SessionID复用、成员/绑定恢复；partial明确报错无覆盖，非OS断电/全事务验收。

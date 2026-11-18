@@ -11,6 +11,7 @@ on:
       - pnpm-lock.yaml
       - scripts/build.mjs
       - scripts/packed-smoke.mjs
+      - scripts/source-smoke.mjs
       - scripts/check-import-interruption.mjs
       - scripts/measure-resources.mjs
       - scripts/quality/**
@@ -26,6 +27,7 @@ on:
         'tests/helpers/**',
         'tests/fixtures/**',
         'scripts/packed-smoke.mjs',
+        'scripts/source-smoke.mjs',
         'scripts/check-import-interruption.mjs',
         'scripts/measure-resources.mjs',
         'package.json',
@@ -54,13 +56,17 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Pack bytes, isolated official peers, native Loader and entry
-        run: node scripts/packed-smoke.mjs
+        run: pnpm test:packed
       - name: Real Cordis, storage, official import and production AgentLoop
         run: pnpm test:runtime
       - name: Durable import hard-stop and restart checkpoints
         run: pnpm test:interruption
       - name: Bounded synthetic preview measurements (not RSS ceiling acceptance)
         run: pnpm test:resources -- --repeat=2
+      - name: Current HEAD source ZIP in a fresh no-Git consumer
+        run: |
+          node -e "const p=require('./package.json');require('node:child_process').execFileSync('git',['archive','--format=zip','--prefix='+p.name+'-'+p.version+'/','--output=test-results/source-ci.zip','HEAD'])"
+          pnpm test:source -- test-results/source-ci.zip
       - name: Install only Chromium for declared mobile views
         run: pnpm exec playwright install --with-deps chromium
       - name: Native DSH mobile workflow

@@ -1,6 +1,6 @@
 # 开发进度 / Engineering progress
 
-## 2026-11-19 03:15 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
+## 2026-11-19 04:22 CST · 本地维护预览，整体 MVP 待真实数据与模型验收
 
 项目是独立 **DSH Continuity bundle 插件**，不是浏览器扩展、另一套客户端或 Harness。代码在独立目录；官方源码保持只读和 clean。所有本地开发、提交与测试均未公开发布，当前运行中的 3080 GUI 未改动。
 
@@ -20,22 +20,23 @@
 
 工具链为隔离 **Node 24.22.3 / pnpm 11.28.5 / Vitest4.1.12**，主机默认 Node22/pnpm9未替换。官方稳定基准为 [`master` SHA ca33fd6843b205e279c7ccb6cb73a472c78f5760](https://github.com/DeepSeek-ai/deepseek-harness/tree/ca33fd6843b205e279c7ccb6cb73a472c78f5760)，已发布依赖 `0.2.2-rc.4`；[最新源码补充](UPSTREAM_LATEST.md)记录2e39e704 / rc.5源码轨道，非rc.5 npm/browser消费声明。
 
-| 路径                                       | 最近实际结果                                          | 说明                                                                                                |
-| ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| npm 官方运行版回归                         | **60/60，28 文件**                                    | 真实 Cordis/Storage/Session/Query/Workspace/Connection/AgentLoop/compaction；仅外部模型 IO scripted |
-| exact SHA 源码回归                         | **60/60，28 文件**                                    | 官方 + vendor 源码 aliases；不是只改版本标题                                                        |
-| latest2e39e704 源码回归                    | **60/60，28文件**                                     | 正式latestprobeexit0；原生源码引用补齐，stablePinUnchanged=true                                     |
-| 手机 E2E                                   | **8/8**                                               | 完整官方 CLI Web 与 root Slot fixture；390×844、360×800，两个隔离认证 Host 自动启动                 |
-| rc.5发布consumer实验                       | **60/60；phone8/8、重复8/8**                          | 只改consumer精确版本与engine；源代码不改，非原rc4installer兼容声明                                  |
-| 严格类型、ESLint、格式                     | **通过**                                              | 最终源码逐项实跑                                                                                    |
-| 密钥模式扫描                               | **最终源码tracked扫描通过，0findings**                | 合成fixture独立排除；实际文本统计见维护验证报告                                                     |
-| build → pack → 隔离 consumer → 原生 Loader | **通过**                                              | 57包consumer，最终构建字节与校验和保留                                                              |
-| npm/源码差异                               | 实际使用接口 **9 DIFF**；entry 比较 **31 包/16 DIFF** | 同版本号不代表源码同一                                                                              |
-| production audit                           | 0 high/critical，0 moderate                           | 与完整开发 Host 闭包分开                                                                            |
-| 开发闭包 audit                             | **0公告，highgateexit0**                              | SDK2.3项目override实测修复；picomatchwithdrawnfeed更新不是codefix                                   |
-| MCP传输公共probe                           | **5/5**                                               | 真实loopback直接/同源HTTP、跨源307/302、stdio；非OAuth/真实Host修复声明                             |
-| 导入中断/取消/挂接失败重启                 | **9/9checkpoint**                                     | 实际post-durability硬退出73→freshprocess0；完整ID复用、partialSession明确错误保留                   |
-| 有界预览资源观察                           | **8种×2轮，16child通过**                              | 1/8/32MiBstored/deflate及限额/在途取消；whole-childRSS含fixture，非默认大限额承诺                   |
+| 路径                                       | 最近实际结果                                          | 说明                                                                                                 |
+| ------------------------------------------ | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| npm 官方运行版回归                         | **60/60，28 文件**                                    | 真实 Cordis/Storage/Session/Query/Workspace/Connection/AgentLoop/compaction；仅外部模型 IO scripted  |
+| exact SHA 源码回归                         | **60/60，28 文件**                                    | 官方 + vendor 源码 aliases；不是只改版本标题                                                         |
+| latest2e39e704 源码回归                    | **60/60，28文件**                                     | 正式latestprobeexit0；原生源码引用补齐，stablePinUnchanged=true                                      |
+| 手机 E2E                                   | **8/8**                                               | 完整官方 CLI Web 与 root Slot fixture；390×844、360×800，两个隔离认证 Host 自动启动                  |
+| rc.5发布consumer实验                       | **60/60；phone8/8、重复8/8**                          | 只改consumer精确版本与engine；源代码不改，非原rc4installer兼容声明                                   |
+| 严格类型、ESLint、格式                     | **通过**                                              | 最终源码逐项实跑                                                                                     |
+| 密钥模式扫描                               | **最终源码tracked扫描通过，0findings**                | 合成fixture独立排除；实际文本统计见维护验证报告                                                      |
+| build → pack → 隔离 consumer → 原生 Loader | **通过**                                              | 57包consumer，最终构建字节与校验和保留                                                               |
+| npm/源码差异                               | 实际使用接口 **9 DIFF**；entry 比较 **31 包/16 DIFF** | 同版本号不代表源码同一                                                                               |
+| production audit                           | round3：0公告；round4刷新fetch失败                    | 原锁未改，历史snapshot非当前feed成功                                                                 |
+| 开发闭包 audit                             | round3：0公告/highgate0；本轮未完成新查询             | 原阈值/ignore不改；生产fetch失败后dev/high未运行完成                                                 |
+| MCP传输公共probe                           | **5/5**                                               | 真实loopback直接/同源HTTP、跨源307/302、stdio；非OAuth/真实Host修复声明                              |
+| 导入中断/取消/挂接失败重启                 | **9/9checkpoint**                                     | 实际post-durability硬退出73→freshprocess0；完整ID复用、partialSession明确错误保留                    |
+| 有界预览资源观察                           | **8种×2轮，16child通过**                              | 1/8/32MiBstored/deflate及限额/在途取消；whole-childRSS含fixture，非默认大限额承诺                    |
+| 无Git源码ZIP消费                           | **candidate完整通过**                                 | freshfrozen747依赖→build→60runtime→9checkpoint→16observations→packedLoader，commit:null，最终ZIP另测 |
 
 详细命令与边界：[运行证据](RUNTIME_EVIDENCE.md)、[测试指南](TESTING.md)、[已知问题](KNOWN_ISSUES.md)。
 

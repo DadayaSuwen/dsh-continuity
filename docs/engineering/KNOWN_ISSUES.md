@@ -1,12 +1,12 @@
 # 已知问题 / Known issues
 
-更新：2026-11-19 03:15 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
+更新：2026-11-19 04:22 CST。整体 MVP 尚未接受；此列表保留真实验收缺口，不把未跑项目写成通过。
 
 ## 需要外部证据 / External acceptance
 
 1. **真实导出与模型质量**：当前仅合成官方 schema 和 scripted 外部模型 IO。待用户明确允许的实际 App ZIP、至少两个真实模型的人设/关系/剧情回归；真实调用可能涉及额度，另行确认。
 2. **上游latest消费边界**：2e39e704 /rc.5源码60/60；已发布rc.5独立consumer60/60，正确exactengine后完整phone8/8并重复8/8。原rc.4installer exactengine仍不匹配rc.5，未宽化官方peers或绕过admission；本轮只验证sourcevariant。初次6/8与两次wrapper0测试失败保留。[消费跟进](PUBLISHED_RC5_FOLLOWUP.md) · [源码补充](UPSTREAM_LATEST.md)。
-3. **供应链与Host边界**：项目dev/CI以SDK2.3.0override修复MCP跨源header/body转发，5个真实公共probe检查通过；生产/完整开发audit当前0公告，原highgateexit0。Picomatch4.0.7公告撤回已被registry采纳，没有codepatch，仍避免不可信glob。用户安装Continuity不会自动替换其HostSDK，OAuth/TLS/代理/真实服务未验证。见[MCP实测](MCP_TRANSPORT.md)与[第一方研究](../research/DEPENDENCY_ADVISORY_REVIEW.md)。
+3. **供应链与Host边界**：项目dev/CI以SDK2.3.0override修复MCP跨源header/body转发，5个真实公共probe检查通过；生产/完整开发audit的最近成功snapshot为round3的0公告/highgate0；round4刷新两次fetch失败，原锁/阈值/ignore不改，不把旧记录算为本轮freshfeed通过。Picomatch4.0.7公告撤回已被registry采纳，没有codepatch，仍避免不可信glob。用户安装Continuity不会自动替换其HostSDK，OAuth/TLS/代理/真实服务未验证。见[MCP实测](MCP_TRANSPORT.md)与[第一方研究](../research/DEPENDENCY_ADVISORY_REVIEW.md)。
 4. **远端治理与发布**：八工作流是本地代码，cloud Actions/CodeQL/actionlint尚无运行证明；CODEOWNERS 模板未启用，branch/environment/人类 reviewer/npm trusted publishing 未配置。只交付发布准备，无 public writes。
 5. **首次 governance bootstrap**：trusted-base checker 首次进入空基线时不存在。人类需在公开仓库确认前检查初始化 snapshot，将可信 gate 放入 main 后再开启 required status；任何当前 PR 不执行自己的修改版审批器，不设置自动通过。
 
@@ -23,6 +23,8 @@
 14. **删除**：插件记忆/来源删除不删除正式Session/附件，也不抹掉旧日志快照和既有模型回复。官方审计API无正式Session/Attachment delete；卸载默认保留数据。
 
 15. **v1来源数量**：每包最多1000included与1000omitted source IDs；export和restore保存前都检查并显式报错。长期采集需分批资产管理，超过上限未提供自动分包UI。
+
+16. **源码包复现**：原ed431c5 ZIP无Git时build/runtime能运行，但两个新增测试强制HEAD失败；ordinarymetadata改为本目录真实GitSHA或null后，实际新candidate ZIP frozeninstall→build→60runtime→9checkpoint→16observations→Loader通过。锁/正式rc4peers不改，私有toolchain不打包；trackedsecret/官方sourceSHA/审批仍需其Git前提。见[源包报告](SOURCE_ARCHIVE.md)。最终commit ZIP仍另行精确摘要复验。
 
 ## 已复现并修复 / Reproduced and fixed
 

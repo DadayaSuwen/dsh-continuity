@@ -18,6 +18,8 @@ dsh web
 
 首次使用建议独立 DSH profile。包自带官方 `dsh.bundle` patch 和 native Web client；卸载默认保留已有资产。
 
+源码 ZIP 有内层包目录，正常不含 `.git`、`.toolchain`、已安装依赖或 `dist`；使用独立安装的 Node/pnpm 并先构建。普通中断/资源报告无本目录 Git 时记录空 commit，仍保留代码/构建摘要；[源码包实证](docs/engineering/SOURCE_ARCHIVE.md)与要求 Git 的审批/发布流程分开。
+
 ## 使用
 
 在 DSH 侧边栏“新会话”旁打开 **迁移与记忆**。手机布局先展开侧边栏。
@@ -58,7 +60,7 @@ DSH 仍处于 Developer Preview。每日上游检查发现变动后通知维护�
 - 身份使用明确分区键；多用户共享、名称与 ID 分离改名体验为 Planned。
 - [九个导入中断节点](docs/engineering/IMPORT_INTERRUPTION.md)已通过freshprocess重启；[1/8/32MiB有界资源观察](docs/engineering/RESOURCE_MEASUREMENTS.md)含fixture/模块内存，默认128/512/64MiB峰值和OS断电窗口未验收。
 - v1 保存来源/记忆；完整 Session/附件迁移包与大包流式恢复为 Planned。
-- 本项目生产/开发audit当前0公告，依赖修复已有实测、撤回公告feed单独核实；这不更新用户现有HostSDK或证明所有缺陷消失。见[MCP范围](docs/engineering/MCP_TRANSPORT.md)。公开发布尚未批准。
+- 本项目最近成功的round3生产/开发audit为0公告；round4刷新fetch失败，锁未变。依赖修复已有实测、撤回公告feed单独核实；这不更新用户现有HostSDK或证明所有缺陷消失。见[MCP范围](docs/engineering/MCP_TRANSPORT.md)。公开发布尚未批准。
 
 项目不规避 DeepSeek 限额，也不保证不同模型逐字相同行为。整体 MVP 验收还包括用户允许的真实官方导出样本和真实模型质量证据。
 
@@ -75,6 +77,7 @@ pnpm test:interruption
 pnpm test:pinned
 pnpm build
 pnpm test:resources -- --repeat=2
+pnpm test:packed
 pnpm check:docs
 ```
 

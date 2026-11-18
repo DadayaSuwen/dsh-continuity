@@ -12,6 +12,14 @@ export PATH="$PWD/.toolchain/node-v24.22.3-win-x64:$PATH"
 node.exe scripts/measure-resources.mjs --repeat=2
 ```
 
+That historical invocation uses the original machine's private `.toolchain`. A plain source ZIP uses separately installed Node24/pnpm11 from its inner package root; build first. The current runner records `sourceCommit:null` without own-root Git metadata while retaining actual code/build hashes:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+pnpm test:resources -- --repeat=2
+```
+
 **8 bounded scenarios × 2 repetitions = 16 fresh-child observations**, not16 new Vitest cases or product performance acceptance. Pilot/intermediate runs are retained; this table uses only the final harness confirmation.
 
 - Production source baseline: `ca1b65ce04b11b2d76557e60bd30d3572f69348f`; Node **24.22.3 win-x64**, fflate **0.8.3**.

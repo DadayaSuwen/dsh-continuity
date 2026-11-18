@@ -78,6 +78,8 @@
     "test:integration": "vitest run tests/integration",
     "test:runtime": "vitest run tests/e2e/runtime",
     "test:pinned": "node scripts/test-pinned.mjs",
+    "test:packed": "node scripts/packed-smoke.mjs",
+    "test:source": "node scripts/source-smoke.mjs",
     "test:mobile": "node scripts/test-mobile.mjs",
     "test:mcp": "node scripts/check-mcp-transport.mjs",
     "test:interruption": "node scripts/check-import-interruption.mjs",

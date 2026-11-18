@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { evidence, root } from './quality/common.mjs';
+import { checkoutCommit, evidence, root } from './quality/common.mjs';
 
 if (process.versions.node.split('.')[0] !== '24')
   throw new Error('Use the project Node24 toolchain');
@@ -47,7 +47,7 @@ await build({
 const report = {
   checkedAt: new Date().toISOString(),
   node: process.version,
-  sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
+  sourceCommit: checkoutCommit(),
   harnessSha256: createHash('sha256')
     .update(await readFile(join(root, 'scripts/check-import-interruption.mjs')))
     .digest('hex'),

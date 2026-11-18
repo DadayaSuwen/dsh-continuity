@@ -18,6 +18,8 @@ dsh web
 
 Use an isolated DSH profile for first trials. The package supplies the official `dsh.bundle` patch and native Web client. Removing the plugin preserves stored assets by default.
 
+The source ZIP has an inner package directory and no `.git`, `.toolchain`, installed dependencies or `dist`. Use separately installed Node/pnpm and build first. Ordinary interruption/resource reports record a null commit without own-root Git metadata; code/build hashes remain. [Source-archive verification](docs/engineering/SOURCE_ARCHIVE.en.md) distinguishes this from Git-required review/release gates.
+
 ## Usage
 
 Open **迁移与记忆 / Migration & memory** beside New conversation in the DSH sidebar. On a phone, open the sidebar first.
@@ -58,7 +60,7 @@ Source deletion, memory deletion and formal DSH Session/attachment deletion are 
 - Current identities use explicit keys; multi-user sharing and display-name rename mapping are Planned.
 - [Nine import interruption checkpoints](docs/engineering/IMPORT_INTERRUPTION.en.md) pass after fresh-process restart. [Bounded1/8/32MiB resource observations](docs/engineering/RESOURCE_MEASUREMENTS.en.md) include fixture/module memory; default128/512/64MiB peaks and power-loss windows remain unvalidated.
 - Package v1 preserves sources/memories; full Session/attachment package recovery and large streaming backups are Planned.
-- Current project production/development audits report zero advisories after tested dependency fixes and withdrawn-feed reconciliation; this does not update existing user Host SDKs or prove all defects absent. [MCP scope](docs/engineering/MCP_TRANSPORT.en.md). Public release is not approved.
+- The last successful project production/development audit snapshot (round3) reported zero advisories; the round4 refresh failed to fetch, with the lock unchanged. Tested fixes and withdrawn-feed reconciliation do not update existing user Host SDKs or prove all defects absent. [MCP scope](docs/engineering/MCP_TRANSPORT.en.md). Public release is not approved.
 
 This extension does not bypass DeepSeek limits or guarantee identical model behavior across providers. Overall MVP acceptance remains open for a real user-approved official export and live-model quality evidence.
 
@@ -75,6 +77,7 @@ pnpm test:interruption
 pnpm test:pinned
 pnpm build
 pnpm test:resources -- --repeat=2
+pnpm test:packed
 pnpm check:docs
 ```
 

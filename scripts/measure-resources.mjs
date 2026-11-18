@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import os from 'node:os';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { checkoutCommit, root } from './quality/common.mjs';
 
-const root = fileURLToPath(new URL('../', import.meta.url));
 const script = fileURLToPath(import.meta.url);
 const dist = join(root, 'dist/index.js');
 const MiB = 1024 * 1024;
@@ -247,10 +247,7 @@ async function main() {
   const repeat = process.argv.includes('--repeat=2') ? 2 : 1;
   const report = {
     startedAt: new Date().toISOString(),
-    sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], {
-      cwd: root,
-      encoding: 'utf8',
-    }).trim(),
+    sourceCommit: checkoutCommit(),
     distSha256,
     distBytes: built.length,
     harnessSha256: hash(await readFile(script)),

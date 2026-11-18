@@ -4,6 +4,23 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+
+/** Optional evidence only; archive directories never inherit an ancestor repository identity. */
+export function checkoutCommit(directory = root) {
+  if (!existsSync(join(directory, '.git'))) return null;
+  const result = spawnSync('git', ['rev-parse', '--show-toplevel', 'HEAD'], {
+    cwd: directory,
+    encoding: 'utf8',
+    timeout: 10000,
+    maxBuffer: 4096,
+  });
+  if (result.error || result.status !== 0) return null;
+  const [top, sha] = result.stdout.trim().split(/\r?\n/u);
+  return top && sha && /^[a-f0-9]{40}$/u.test(sha) && realpathSync(top) === realpathSync(directory)
+    ? sha
+    : null;
+}
+
 export const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'));
 export const pkg = () => readJson(join(root, 'package.json'));
 export const evidence = (name, value) => {
