@@ -98,7 +98,7 @@
     "@deepseek-ai/dsh-brand": "0.2.2-rc.4",
     "@deepseek-ai/schemastery": "~3.19.0",
     "fflate": "0.8.3",
-    "zod": "4.6.6"
+    "zod": "4.6.7"
   },
   "peerDependencies": {
     "react": "^18.3.1",
